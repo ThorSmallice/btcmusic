@@ -1,0 +1,94 @@
+@charset "utf-8";
+// @function
+// wm($widthH) 返回元素宽度或者高度 参数$widthH ： width/height设计稿尺寸
+
+
+// ---------------------------------------
+// @mixin 
+
+/* 
+flex($pri, $cou,$flW) 改成flex容器
+    参数
+    $pri：主轴排列方式 默认center
+    $cou：副轴单行排列方式 默认center
+    $flW：控制是否换行 默认换行（可选）
+*/
+
+/*
+bgcJL( X , Y) 添加精灵图背景
+    参数
+    位置 X Y 
+
+*/
+
+
+/*
+eleSize(width, height) 设置宽高
+    参数
+    width 必填
+    height 必填
+*/
+
+/*
+posiTL(pattern,top,left)
+    参数
+    定位模式 必填
+    上 左  默认 0
+
+posiBR(pattern,bottom,right)
+    参数
+    定位模式 必填
+    下 右 默认 0
+*/
+
+/*
+aFont($linHei,$afontSize,$fontCol,$bgcCol)
+用于a标签设置大小
+    参数
+    行高 必填
+    字体大小 必填
+    字体颜色 默认#fff
+    背景颜色 默认#fff
+
+*/
+@function vm($widthH) {
+    @return ($widthH / 750) * 100 + vw;
+}
+
+@mixin wh ($width,$height) {
+    width: vm($width);
+    height: vm($height);
+}
+
+@mixin flex($pri:center,$cou:center,$flW:wrap) {
+    display: flex;
+    justify-content: $pri;
+    align-items: $cou;
+    flex-wrap: $flW;
+}
+ 
+
+ 
+@mixin posiTL($pattern,$t:0,$l:0) {
+    position:$pattern;
+    $t: vm($t);
+    $l:vm($l);
+    top: $t;
+    left: $l;
+}
+
+@mixin posiBR($pattern,$b:0,$r:0) {
+    position:$pattern;
+    $b:vm($b);
+    $r:vm(($r));
+    bottom: $b;
+    right: $r;
+}
+
+@mixin aFont ($linHei,$afontSize,$fontCol:#fff,$bgcCol:transparent){
+    line-height: vm($linHei);
+    color: $fontCol;
+    background-color: $bgcCol;
+    text-align: center;
+    font-size: vm($afontSize);
+}

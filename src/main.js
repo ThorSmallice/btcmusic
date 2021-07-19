@@ -2,6 +2,10 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store' 
+import _axios from './utils/_axios'
+import "@/assets/iconfont/iconfont.js"
+
+Vue.prototype.axios = _axios
 
 Vue.config.productionTip = false
 

@@ -7,12 +7,45 @@ const routes = [
   {
     path: '/',
     name: 'Index', 
-    component: () => import('../views/Index.vue')
+    redirect: '/recommend',
+    component: () => import('../views/Index.vue'),
+    children:[
+        {
+            path: 'recommend',
+            name:  'Recommend',
+            component: () => import('../views/index/Recommend.vue'),
+            meta: {
+                title: "今日推荐音乐"
+            }
+        },
+        {
+            path: 'hot',
+            name:  'Hot',
+            component: () => import('../views/index/Hot.vue'),
+            meta: {
+                title: "Hot热歌榜"
+            }
+        },
+        {
+            path: 'search',
+            name:  'Search',
+            component: () => import('../views/index/Search.vue'),
+            meta: {
+                title: "搜索你喜欢的音乐~"
+            }
+        }
+    ]
   }
 ]
 
 const router = new VueRouter({
-  routes
+    linkActiveClass : "link-active",
+    routes
+})
+
+router.beforeEach((to, from, next) => {
+    document.title  = to.meta.title
+    next()
 })
 
 export default router
