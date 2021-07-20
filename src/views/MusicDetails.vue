@@ -17,24 +17,42 @@
                 </router-link>    
             </div>
         </header>
-        <p class="music-list-text">歌曲列表</p>
+        <main>
+             <p class="music-list-text">歌曲列表</p>
 
-        <musicListTh :datas="CurrentDate.tracks"></musicListTh>
+            <musicListTh :datas="CurrentDate.tracks"></musicListTh>
 
-        <p class="download-app">
-            查看更多歌曲，请下载客户端
-        </p>
-        
-        <p class="music-list-text">精彩评论</p>
+            <p class="download-app">
+                查看更多歌曲，请下载客户端
+            </p>
+            
+            <p class="music-list-text">精彩评论</p>
+            <comment-floor :datas="CommentData.hotComments"></comment-floor>
+
+            <router-link to="#" class="comment-lookall" tag="p">查看全部{{CommentData.total}}条评论</router-link>
+        </main>
+        <footer>
+            <button class="collectionList">
+                <svg 
+                class="icon icon-logo" 
+                aria-hidden="true">
+                    <use xlink:href="#icon-bingtanghulu"></use>
+                </svg>
+                收藏歌单
+            </button>
+        </footer>
     </div>
 </template>
 
 <script>
 import musicListTh from './../components/MusicListTh.vue';
+import commentFloor from './../components/CommFloor.vue';
+
 export default {
     data: function () {
         return {
-            CurrentDate:{}
+            CurrentDate:{},     // 歌曲列表
+            CommentData: {},    // 评论列表
         }
     },
     methods:{
@@ -42,6 +60,9 @@ export default {
             this.axios.get(`/playlist/detail?id=${this.$route.params.id}`).then(res => { 
                 this.CurrentDate = res.playlist
             }) 
+            this.axios.get(`/comment/playlist?id=${this.$route.params.id}`).then(res => { 
+                this.CommentData = res
+            })
             // if (!localStorage.getItem("CurrentDate")) {
             //     this.axios.get(`/playlist/detail?id=${this.$route.params.id}`).then(res => { 
             //         this.CurrentDate = res.playlist
@@ -53,7 +74,6 @@ export default {
     },
     created() {
         this.getCurrentDate()
-        console.log(this.CurrentDate);
     },
     watch: {
         // CurrentDate : function() {
@@ -61,7 +81,8 @@ export default {
         // }
     },
     components: {
-        musicListTh
+        musicListTh,
+        "comment-floor" : commentFloor
     }
     
 }
@@ -145,6 +166,35 @@ export default {
         text-align: center;
         color: #999;
         margin-top: 10px;
+    }
+    .comment-lookall {
+        width: 100%;
+        font-size: 14px;
+        color: #999;
+        padding: 18px 0;
+        text-align: center;
+        border-bottom: 1px solid rgba(114, 113, 113, 0.1);
+    }
+    footer {
+        width: 100%;
+        position:fixed;
+        bottom: 0;
+        left: 0;
+        text-align: center;
+        padding: 5px;
+        background-color: #fff;
+        .collectionList {
+            width: vm(610);
+            height: 40px;
+            line-height: 40px;
+            border-radius: 40px;
+            background-color: #ff3a3a;
+            font-size: 16px;
+            color:#fff;
+            .icon-logo {
+                font-size: 20px;
+            }
+        }
     }
 }
 </style>
