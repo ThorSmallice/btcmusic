@@ -37,26 +37,26 @@ const routes = [
         ]
     },
     {
+        path: '/user',
+        name: 'User',
+        component: () => import('./../views/User.vue')
+        // meta: {
+        //     title: "个人中心页"
+        // }
+    },
+    {
         path: '/musicdetails/:id',
         name: 'MusicDetails',
         component: () => import('../views/MusicDetails.vue')
     },
     {
-        path: '/user',
-        name: 'User',
-        component: () => import('../views/User.vue'),
-        meta: {
-            title: "个人中心页"
-        }
-    },
-    {
         path: '/song',
         name: 'Song',
-        component: () => import('../views/Song.vue'),
-        meta: {
-            title: "个人中心页"
-        }
-    },
+        component: () => import('../views/Song.vue')
+        // meta: {
+        //     title: "个人中心页"
+        // }
+    }
 ]
 
 const router = new VueRouter({

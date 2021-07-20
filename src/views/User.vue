@@ -55,12 +55,12 @@
     </div>
 
     <div class="user-playlist">
-      <section>歌单({{ playList.data.playlist.length }})</section>
+      <section>歌单 ( {{ playList.playlist.length || "" }} ) </section>
       <ul>
-        <template v-for="item in playList.data.playlist">
+        <template v-for="item in playList.playlist">
           <li :key="item.id">
             <div class="lt">
-              <img :src="item.coverImgUrl" alt="" />
+              <img :src="item.coverImgUrl">
             </div>
             <div class="rt">
               <h4>{{ item.name }}</h4>
@@ -86,18 +86,17 @@
 
 <script>
 export default {
-  data: () => {
-    return {
-      playList: [],
-    };
-  },
-  mounted() {
-    this.axios.get("/user/playlist?uid=1398221246").then((res) => {
-      console.log(res);
-      this.playList = res;
-    });
-  },
-};
+    data: function () {
+        return {
+            playList: {}
+        }
+    },
+    created() {
+        this.axios.get("/user/playlist?uid=1398221246").then((res) => { 
+            this.playList = res;
+        });
+    }
+}
 </script>
 
 <style lang="scss" scoped>
