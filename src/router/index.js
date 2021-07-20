@@ -3,18 +3,6 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-<<<<<<< HEAD
-const routes = [ 
-    {
-        path: '/',
-        name: 'Index', 
-        redirect: '/recommend',
-        component: () => import('../views/Index.vue'),
-        children:[
-            {
-                path: 'recommend',
-                name:  'Recommend',
-=======
 const routes = [
     {
         path: '/',
@@ -25,7 +13,6 @@ const routes = [
             {
                 path: 'recommend',
                 name: 'Recommend',
->>>>>>> dev-wr
                 component: () => import('../views/index/Recommend.vue'),
                 meta: {
                     title: "今日推荐音乐"
@@ -33,11 +20,7 @@ const routes = [
             },
             {
                 path: 'hot',
-<<<<<<< HEAD
-                name:  'Hot',
-=======
                 name: 'Hot',
->>>>>>> dev-wr
                 component: () => import('../views/index/Hot.vue'),
                 meta: {
                     title: "Hot热歌榜"
@@ -45,11 +28,7 @@ const routes = [
             },
             {
                 path: 'search',
-<<<<<<< HEAD
-                name:  'Search',
-=======
                 name: 'Search',
->>>>>>> dev-wr
                 component: () => import('../views/index/Search.vue'),
                 meta: {
                     title: "搜索你喜欢的音乐~"
@@ -58,12 +37,11 @@ const routes = [
         ]
     },
     {
-<<<<<<< HEAD
         path: '/musicdetails/:id',
         name: 'MusicDetails',
         component: () => import('../views/MusicDetails.vue')
-    }
-=======
+    },
+    {
         path: '/user',
         name: 'User',
         component: () => import('../views/User.vue'),
@@ -79,7 +57,6 @@ const routes = [
             title: "个人中心页"
         }
     },
->>>>>>> dev-wr
 ]
 
 const router = new VueRouter({
@@ -87,15 +64,9 @@ const router = new VueRouter({
     routes
 })
 
-<<<<<<< HEAD
-router.beforeEach((to, from,next) => {
-    document.title  = to.meta.title
-    next();
-=======
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title
-    next()
->>>>>>> dev-wr
+    next();
 })
 
 export default router
