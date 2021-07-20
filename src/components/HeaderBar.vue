@@ -19,10 +19,10 @@ export default {
 </script>
 
 <style lang="scss" scoped> 
-#headerBar {
+#headerBar {  
     width: 100%;
     height: 84px;
-    padding: 10px;
+    padding: 10px; 
     background-color: #D43B33;
     display: flex;
     flex-wrap: nowrap;

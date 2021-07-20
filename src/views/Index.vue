@@ -8,13 +8,14 @@
         </nav>
         <main>
             <router-view></router-view>
-        </main>
+        </main> 
     </div>
 </template>
 
 <script>
-import headerBar from "./../components/HeaderBar.vue"
-import navbar from "./../components/Navbar.vue"
+import headerBar from "./../components/HeaderBar.vue";
+import navbar from "./../components/Navbar.vue";
+
 export default {
     components: {
         headerBar,
@@ -24,8 +25,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#Index {
+#Index { 
     width: 100%;
-     
+    padding-top: 144px;
+    header{
+        width: 100%;
+        position: fixed; 
+        top: 0;
+        left: 0;
+        z-index: 20;
+    }
+    nav {
+        width: 100%;
+        position: fixed;
+        top: 84px;
+        left: 0;
+        z-index: 20;
+    }
 }
 </style>

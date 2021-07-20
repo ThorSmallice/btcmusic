@@ -2,8 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store' 
-import _axios from './utils/_axios'
-import "@/assets/iconfont/iconfont.js"
+import _axios from './utils/_axios' 
 
 Vue.prototype.axios = _axios
 
