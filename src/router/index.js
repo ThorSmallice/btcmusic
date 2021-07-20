@@ -43,7 +43,15 @@ const routes = [
         meta: {
             title: "个人中心页"
         }
-    }
+    },
+    {
+        path: '/song',
+        name: 'Song',
+        component: () => import('../views/Song.vue'),
+        meta: {
+            title: "个人中心页"
+        }
+    },
 ]
 
 const router = new VueRouter({
