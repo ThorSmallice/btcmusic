@@ -39,23 +39,26 @@ const routes = [
     {
         path: '/user',
         name: 'User',
-        component: () => import('./../views/User.vue')
-        // meta: {
-        //     title: "个人中心页"
-        // }
+        component: () => import('./../views/User.vue'),
+        meta: {
+            title: "个人中心页"
+        }
     },
     {
         path: '/musicdetails/:id',
         name: 'MusicDetails',
-        component: () => import('../views/MusicDetails.vue')
+        component: () => import('../views/MusicDetails.vue'),
+        meta: {
+            title: "歌单详情"
+        }
     },
     {
         path: '/song',
         name: 'Song',
-        component: () => import('../views/Song.vue')
-        // meta: {
-        //     title: "个人中心页"
-        // }
+        component: () => import('../views/Song.vue'),
+        meta: {
+            title: "个人中心页"
+        }
     }
 ]
 

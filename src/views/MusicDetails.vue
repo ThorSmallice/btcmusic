@@ -38,14 +38,17 @@ export default {
         }
     },
     methods:{
-        getCurrentDate() {   
-            if (!localStorage.getItem("CurrentDate")) {
-                this.axios.get(`/playlist/detail?id=${this.$route.params.id}`).then(res => { 
-                    this.CurrentDate = res.playlist
-                })
-            } else {
-                this.CurrentDate = JSON.parse(localStorage.getItem("CurrentDate"));
-            }
+        getCurrentDate() {  
+            this.axios.get(`/playlist/detail?id=${this.$route.params.id}`).then(res => { 
+                this.CurrentDate = res.playlist
+            }) 
+            // if (!localStorage.getItem("CurrentDate")) {
+            //     this.axios.get(`/playlist/detail?id=${this.$route.params.id}`).then(res => { 
+            //         this.CurrentDate = res.playlist
+            //     })
+            // } else {
+            //     this.CurrentDate = JSON.parse(localStorage.getItem("CurrentDate"));
+            // }
         }
     },
     created() {
@@ -53,9 +56,9 @@ export default {
         console.log(this.CurrentDate);
     },
     watch: {
-        CurrentDate : function() {
-            localStorage.setItem("CurrentDate", JSON.stringify(this.CurrentDate))
-        }
+        // CurrentDate : function() {
+        //     localStorage.setItem("CurrentDate", JSON.stringify(this.CurrentDate))
+        // }
     },
     components: {
         musicListTh
