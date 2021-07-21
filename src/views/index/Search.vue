@@ -126,7 +126,7 @@ export default {
             this.advicetimer = setTimeout(() => {
                 this.axios.get(`/search/suggest?keywords=${this.searchInpContent}&type=mobile`)
                 .then(res => { 
-                    this.searchAdviceData = res.result.allMatch
+                    this.searchAdviceData = res.result.allMatch? res.result.allMatch : []
                 }) 
             },2500)
         },
