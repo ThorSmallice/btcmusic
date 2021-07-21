@@ -1,6 +1,6 @@
 <template>
   <div id="user">
-    <div class="top"  :style=" `background-image: url(${playList.playlist[0].creator.backgroundUrl});` ">
+    <div class="top"  :style=" `background-image: url(${creatorInfo.backgroundUrl});` ">
       <div class="box">
         <div class="up">
           <div class="lt">
@@ -9,7 +9,7 @@
           </div>
           <div class="head-portrait">
             <img
-              :src="playList.playlist[0].creator.avatarUrl"
+              :src="creatorInfo.avatarUrl"
               alt=""
             />
           </div>
@@ -20,7 +20,7 @@
         </div>
         <div class="dn">
           <h3 class="user_name">
-            {{playList.playlist[0].creator.nickname}}
+            {{creatorInfo.nickname}}
             <svg
               style="font-size: 25"
               class="icon icon-vip"
@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <div class="user-radio">
+    <!-- <div class="user-radio">
       <section>播单(1)</section>
       <ul>
         <li>
@@ -47,12 +47,12 @@
           </div>
         </li>
       </ul>
-    </div>
+    </div> -->
 
     <div class="user-playlist">
-      <section>歌单 ( {{ [ playList.playlist.length || ""] }} ) </section>
+      <section>歌单 ( {{  playList.length || "" }} ) </section>
       <ul>
-        <template v-for="item in playList.playlist">
+        <template v-for="item in playList">
           <li :key="item.id">
             <div class="lt">
               <img :src="item.coverImgUrl">
@@ -83,13 +83,14 @@
 export default {
     data: function () {
         return {
-            playList: {}
+            playList: {},
+            creatorInfo: {}  // 个人信息
         }
     },
     created() {
         this.axios.get(`/user/playlist?uid=${this.$route.params.id}`).then((res) => { 
-            this.playList = res;
-            console.log(res);
+            this.playList = res.playlist;
+            this.creatorInfo = res.playlist[0].creator; 
         });
     }
 }

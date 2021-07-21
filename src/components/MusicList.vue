@@ -2,7 +2,7 @@
     <div id="musicList">
         <ul class="musics-ul">
             <template v-for="item in datas">
-                <router-link tag="li" :key="item.id" to="#">
+                <router-link tag="li" :key="item.id" :to="`/song/${item.id}`">
                     <slot name="index"></slot>
 
                     <div class="music-text-wrap">
