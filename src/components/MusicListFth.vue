@@ -8,12 +8,15 @@
                     <div class="music-text-wrap">
                         <div class="music-title">
                             {{item.name}}
-                            <span>{{ item.song.alias[0] | getMusicTitle}}</span>
+                            <!-- <span>{{ item.song.alias[0] | getMusicTitle}}</span> -->
                         </div> 
 
                         <div class="music-author">
                             <i class="iconfonts-sq"></i>
-                            <p>{{ item.song.artists[0].name + '-' + item.name }}</p>
+                            <template v-for="chid in item.artists">
+                                <p :key="chid.id">{{ chid.name }}</p>
+                            </template>
+                            <p>{{item.album.name}}</p>
                         </div>
                     </div>
 
