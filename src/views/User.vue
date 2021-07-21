@@ -1,11 +1,6 @@
 <template>
   <div id="user">
-    <div
-      class="top"
-      style="
-        background-image: url(http://p1.music.126.net/HS9wzE4rIPfVNqH3BlNzmg==/109951165657409376.jpg?imageView=1&thumbnail=100y65);
-      "
-    >
+    <div class="top"  :style=" `background-image: url(${playList.playlist[0].creator.backgroundUrl});` ">
       <div class="box">
         <div class="up">
           <div class="lt">
@@ -14,7 +9,7 @@
           </div>
           <div class="head-portrait">
             <img
-              src="http://p1.music.126.net/XK3D_CC1HjbwezcqYjNcJA==/109951164169901681.jpg?imageView=1&thumbnail=240x0"
+              :src="playList.playlist[0].creator.avatarUrl"
               alt=""
             />
           </div>
@@ -25,15 +20,15 @@
         </div>
         <div class="dn">
           <h3 class="user_name">
-            温差感
+            {{playList.playlist[0].creator.nickname}}
             <svg
               style="font-size: 25"
-              class="icon icon-logo"
+              class="icon icon-vip"
               aria-hidden="true"
             >
               <use xlink:href="#icon-vip"></use>
             </svg>
-            <svg class="icon icon-logo" aria-hidden="true">
+            <svg class="icon icon-sex" aria-hidden="true">
               <use xlink:href="#icon-xingbienan"></use>
             </svg>
           </h3>
@@ -55,7 +50,7 @@
     </div>
 
     <div class="user-playlist">
-      <section>歌单 ( {{ playList.playlist.length || "" }} ) </section>
+      <section>歌单 ( {{ [ playList.playlist.length || ""] }} ) </section>
       <ul>
         <template v-for="item in playList.playlist">
           <li :key="item.id">
@@ -92,8 +87,9 @@ export default {
         }
     },
     created() {
-        this.axios.get("/user/playlist?uid=1398221246").then((res) => { 
+        this.axios.get(`/user/playlist?uid=${this.$route.params.id}`).then((res) => { 
             this.playList = res;
+            console.log(res);
         });
     }
 }
@@ -149,15 +145,18 @@ export default {
       }
     }
     .dn {
-      .attention {
-        margin: 0 auto;
-        margin-top: vm(20);
-        width: vm(230);
-        height: vm(60);
-        border-radius: vm(60);
-        line-height: vm(60);
-        border: 1px solid #fff;
-      }
+        .user_name ,.icon-vip ,.icon-sex{
+            vertical-align: middle;
+        } 
+        .attention {
+            margin: 0 auto;
+            margin-top: vm(20);
+            width: vm(230);
+            height: vm(60);
+            border-radius: vm(60);
+            line-height: vm(60);
+            border: 1px solid #fff;
+        }
     }
   }
 

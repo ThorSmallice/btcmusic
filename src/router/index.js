@@ -37,7 +37,7 @@ const routes = [
         ]
     },
     {
-        path: '/user',
+        path: '/user/:id',
         name: 'User',
         component: () => import('./../views/User.vue'),
         meta: {
@@ -58,6 +58,14 @@ const routes = [
         component: () => import('../views/Song.vue'),
         meta: {
             title: "个人中心页"
+        }
+    },
+    {
+        path: '/album/:id',
+        name: 'Album',
+        component: () => import('../views/Album.vue'),
+        meta: {
+            title: "专辑"
         }
     }
 ]

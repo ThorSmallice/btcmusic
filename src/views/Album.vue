@@ -1,35 +1,52 @@
 <template>
-    <div id="MusicDetails">
+    <div id="Album">
         <header>
-            <div class="header-bg" :style=" 'background-image:url('+ CurrentDate.coverImgUrl + '?param=170y170)' "></div>
+            <div class="header-bg" :style=" 'background-image:url('+ AlbumInfo.blurPicUrl + ')' "></div>
 
             <div class="user-wrap">
                 <div class="user-portrait">
-                    <img :src="CurrentDate.coverImgUrl + '?imageView=1&type=webp&thumbnail=252x0' ">
+                    <img :src="AlbumInfo.blurPicUrl + '?imageView=1&type=webp&thumbnail=378y378' ">
                 </div>
 
-                <router-link class="user-music-text" tag="div" :to="`/user/${CurrentDate.userId}`">
-                    <h2>{{CurrentDate.name}}</h2>
+                <router-link class="user-music-text" tag="div" :to="`/user/${AlbumInfo.userId}`">
+                    <h2>{{AlbumInfo.name}}</h2>
                     <div class="recomm-user">
-                        <img :src=" `${creatorData.avatarUrl}?imageView=1&type=webp&thumbnail=60x0 ` " alt="">
-                        {{creatorData.nickname}}
+                        歌手：<span>{{ AlbumAuthor }}</span>
+                        <p>发行时间: {{AlbumInfo.publishTime | getFormatTime(1)}}</p>
                     </div>
                 </router-link>    
             </div>
         </header>
+
+        <section class="album-introduce">
+            <div :class="['introduce-content',{'show-all':!introduceShow}]">
+                简介：{{ AlbumInfo.description }}
+            </div>
+            <span class="iconfonts-xiajiantou" v-if="!introduceShow" @click="showAllIntroduce">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-jiantou"></use>
+                </svg>
+            </span>
+            <span class="iconfonts-xiajiantou" v-else @click="showAllIntroduce">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-jiantou-copy-copy-copy"></use>
+                </svg>
+            </span>
+        </section>
+
         <main>
              <p class="music-list-text">歌曲列表</p>
 
-            <musicListTh :datas="CurrentDate.tracks"></musicListTh>
+            <musicListTh :datas="CurrentDate"></musicListTh>
 
-            <p class="download-app">
+            <!-- <p class="download-app">
                 查看更多歌曲，请下载客户端
-            </p>
+            </p> -->
             
             <p class="music-list-text">精彩评论</p>
             <comment-floor :datas=" CommentData "></comment-floor>
 
-            <router-link to="#" class="comment-lookall" tag="p">查看全部{{CommentData.total}}条评论</router-link>
+            <router-link to="#" class="comment-lookall" tag="p">查看全部{{Commenttotal}}条评论</router-link>
         </main>
         <footer>
             <button class="collectionList">
@@ -38,7 +55,7 @@
                 aria-hidden="true">
                     <use xlink:href="#icon-bingtanghulu"></use>
                 </svg>
-                收藏歌单
+                收藏专辑
             </button>
         </footer>
     </div>
@@ -51,20 +68,27 @@ import commentFloor from './../components/CommFloor.vue';
 export default {
     data: function () {
         return {
-            CurrentDate:{},     // 歌曲列表
+            introduceShow: false, // 控制简介和箭头是否展开
+            CurrentDate:[],     // 歌曲列表
             CommentData: [],    // 评论列表
-            creatorData: {}     // 创建者信息
+            Commenttotal: '',   // 总评论条数
+            creatorData: {},     // 创建者信息
+            AlbumInfo:{},        // 专辑信息
+            AlbumAuthor: ''      // 歌手名
         }
     },
     methods:{
         getCurrentDate() {  
-            this.axios.get(`/playlist/detail?id=${this.$route.params.id}`).then(res => { 
-                this.CurrentDate = res.playlist 
-                this.creatorData = res.playlist.creator
+            this.axios.get(`/album?id=${this.$route.params.id}`).then(res => { 
+                // console.log(res);
+                this.AlbumInfo = res.album 
+                this.AlbumAuthor = res.album.artist.name
+                this.CurrentDate = res.songs 
             }) 
-            this.axios.get(`/comment/playlist?id=${this.$route.params.id}`).then(res => { 
+            this.axios.get(`/comment/album?id=${this.$route.params.id}`).then(res => { 
+                console.log(res);
                 this.CommentData = res.hotComments.length? res.hotComments : res.comments
-                
+                this.Commenttotal = res.total
             })
             // if (!localStorage.getItem("CurrentDate")) {
             //     this.axios.get(`/playlist/detail?id=${this.$route.params.id}`).then(res => { 
@@ -73,6 +97,9 @@ export default {
             // } else {
             //     this.CurrentDate = JSON.parse(localStorage.getItem("CurrentDate"));
             // }
+        },
+        showAllIntroduce() {
+            this.introduceShow = !this.introduceShow
         }
     },
     created() {
@@ -92,7 +119,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#MusicDetails {
+#Album {
     header {
         position: relative;  
         z-index: 0;
@@ -145,17 +172,43 @@ export default {
                     margin-bottom: 2px;
                 }
                 .recomm-user {
-                    color: hsla(0,0%,100%,.7);
-                    img {
-                        border-radius: 50%;
-                        width: 30px;
-                        height: 30px;
-                        vertical-align: middle;
+                    color: hsla(0,0%,100%,.7); 
+                    span {
+                        color: #fff;
+                    }
+                    p {
+                        font-size: 12px;
+                        margin-top: 10px;
                     }
                 }
             }
         }
     }
+
+    .album-introduce {
+        .introduce-content { 
+            user-select: none;
+            padding: 10px 10px 0 15px;
+            font-size: 14px;
+            color: #666;
+            line-height: 21px;
+            &.show-all{
+                height: 75px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+            }
+        }
+        .iconfonts-xiajiantou { 
+            user-select: none;
+            width: 100%;
+            padding: 0 20px 5px 0;
+            text-align: right;
+        }
+    }
+
     main {
         padding-bottom: 50px;
     }

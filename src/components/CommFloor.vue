@@ -4,7 +4,7 @@
             <template v-for="item in datas">
                 <li class="comment-item" :key="item.commentId">
                     <router-link class="head-port" to="#">
-                        <img :src="item.user.avatarUrl" alt="">
+                        <img :src="item.user.avatarUrl || '' " alt="">
                     </router-link>
 
                     <div class="user-info-wrap">
@@ -13,7 +13,7 @@
                             <i class="iconfonts-vip"></i>
                         </router-link>
 
-                        <p class="comment-times">{{ item.time }}</p>
+                        <p class="comment-times">{{ item.time | getFormatTime(2) }}</p>
 
                         <span class="comment-content">
                            {{item.content}}
