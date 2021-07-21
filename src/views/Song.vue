@@ -1,12 +1,284 @@
 <template>
-  <div id="Song">
-    <h1>album</h1>
+  <div id="song">
+    <div class="bg"></div>
+    <div class="top">
+      <div class="head_portrait">
+        <img
+          src="//p2.music.126.net/p4gS961wdeSUwtvNGVWl9w==/109951163282076195.jpg?imageView=1&type=webp&thumbnail=126x0"
+          alt=""
+        />
+      </div>
+      你知道这首歌居然被这么评论？
+      <span class="look_look">打开看看&gt;</span>
+    </div>
+    <div class="player_box">
+      <div class="record_player">
+        <div class="player_center">
+          <div class="player_img" @click="play">
+            <img
+              src="http://p2.music.126.net/-SebB9G58GprMCOSN4rMCQ==/109951166177053222.jpg?imageView&thumbnail=360y360&quality=75&tostatic=0"
+              alt=""
+            />
+
+            <span class="player_btn" v-show="isplay"> </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="song_info">
+      <h2 class="song_h2">
+        <span>☆偶像系列 (☆Lil uzi vert)</span>
+        <span>-</span>
+        <b>李佳隆/VVS_MUSIC</b>
+      </h2>
+      <div class="song_lrc">
+        <div class="song_scroll">
+          <p>他们等我出现等得太久</p>
+          <p>他们等我出现等得太久</p>
+          <p>他们等我出现等得太久</p>
+          <p>他们等我出现等得太久</p>
+          <p>他们等我出现等得太久</p>
+          <p>他们等我出现等得太久</p>
+          <p>他们等我出现等得太久</p>
+          <p>他们等我出现等得太久</p>
+          <p>他们等我出现等得太久</p>
+          <p>他们等我出现等得太久</p>
+        </div>
+      </div>
+    </div>
+    <div class="musicStreetWakeUp">
+      <img
+        src="//s3.music.126.net/mobile-new/img/musicStreet.png?22227b514ca899d2759a388ffbac109b"
+        alt=""
+      />
+    </div>
+    <div class="footer-wrap">
+      <span class="open_app">打开</span>
+      <span class="download_app">下载</span>
+    </div>
+    <audio :src="playList" autoplay></audio>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data: () => {
+    return {
+      isplay: true,
+      playList: [],
+    };
+  },
+  methods: {
+    play() {
+      this.isplay = !this.isplay;
+    },
+  },
+  created() {
+    this.axios.get("/song/url?id=33894312").then((res) => {
+      this.playList = res.data[0].url;
+      console.log(this.playList);
+    });
+  },
+};
 </script>
 
-<style>
+<style lang="scss" scoped>
+#song {
+  .bg {
+    background-image: url("http://p2.music.126.net/-SebB9G58GprMCOSN4rMCQ==/109951166177053222.jpg?imageView&thumbnail=50y50&quality=15&tostatic=0");
+    opacity: 1;
+    transform: scale(1.5);
+    transform-origin: center center;
+    filter: blur(50px);
+
+    background-color: #161824;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 100%;
+    overflow: hidden;
+    &::before {
+      content: " ";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+  .top {
+    position: fixed;
+    left: 5vw;
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    height: vm(90);
+    // line-height: vm(80);
+    background-color: rgba(255, 89, 89, 0);
+    color: #fff;
+    border-bottom: 1px solid hsla(0, 0%, 100%, 0.2);
+
+    .head_portrait {
+      width: vm(60);
+      height: vm(60);
+      background-color: rgb(155, 209, 105);
+      border-radius: 50%;
+      margin-right: vm(15);
+      overflow: hidden;
+      img {
+        width: 100%;
+      }
+    }
+    .look_look {
+      text-align: center;
+      width: vm(160);
+      height: vm(50);
+      line-height: vm(50);
+      border: 1px solid #fff;
+      border-radius: vm(50);
+      position: absolute;
+      right: 0;
+    }
+  }
+  .player_box {
+    position: relative;
+    padding-top: vm(230);
+    .record_player {
+      position: relative;
+      margin: 0 auto;
+      width: vm(500);
+      height: vm(500);
+      background: url(//s3.music.126.net/mobile-new/img/disc.png?d3bdd10…=)
+        no-repeat;
+      background-size: contain;
+      &::after {
+        content: "";
+        position: absolute;
+        width: 73px;
+        height: 118px;
+        top: -50px;
+        left: 112px;
+        -webkit-transform: rotate(-7deg);
+        -ms-transform: rotate(-7deg);
+        transform: rotate(-7deg);
+        -webkit-transform-origin: left top;
+        -ms-transform-origin: left top;
+        transform-origin: left top;
+        background: url(//s3.music.126.net/mobile-new/img/needle-ab.png?4b81da0…=)
+          no-repeat;
+        background-size: contain;
+      }
+      .player_center {
+        position: absolute;
+        overflow: hidden;
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        left: 50%;
+        top: 50%;
+
+        margin: -75px 0 0 -75px;
+        background: url(//s3.music.126.net/mobile-new/img/disc_default.png?ba7c53e…=)
+          no-repeat;
+        background-size: contain;
+        .player_img {
+          // position: absolute;
+          // overflow: hidden;
+          // border-radius: 50%;
+          // width: 150px;
+          // height: 150px;
+          // left: 50%;
+          // top: 50%;
+
+          // margin: -75px 0 0 -75px;
+          img {
+            width: 100%;
+          }
+          .player_btn {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKgAAACoCAMAAABDlVWGAAABJlBMVEUAAAAAAAD////l5eX///9iYmKDg4Pn5+f///9YWFj////09PT////4+Pjt7e3///////9oaGhBQUH////////////////CwsIaGhr///8xMTEkJCT////7+/vp6en///////////////+srKyoqKienp58fHz////y8vKTk5P///8EBAT////////////////V1dW3t7f////////////////////v7++jo6N9fX3///////+UlJT////s7Oz////Nzc3///////+RkZGPj495eXkTExP////////29vb////k5OTPz882Njb////////////c3Nz///////9ycnJsbGz///9dXV3////////Q0ND///9QUFD///////////////////9FeiN6AAAAYXRSTlNmAP3c+oWT3ueB9vA19ealRId5EQbuurpu83RxD/nh05dfAquooo+M7JtzaSolE+vMspJ3Wj7w6KSQj6ucKeXNxLWnmpmObVYd8t3axXZRSt7TvbKLideCeSzHnn4V3Nh6YarbPAAABlRJREFUeNrU14lWEmEYh/GXcdj3HQTZRCkS913UNE2zbLd9Oc/930Q2LmVpwPAC03MD/M5835n/IC6dkqHnzcVoZvdkLp2HfHruZDcTXWw+DyVdOilAt6uNjI8782Ua1W2XjTShtdDSmzRdlH6zFKq5bKQBTS5H57gqXJrP1tsb7kShkBPJFQoJ90a7np0vhblqLrrc8R7oQ4vVPZOLIp8mp8flzsanJ59FuMjcqxZdHVKFxvYDWK1lPQXpooInu4ZVYD/m6pAWNLn0DSvvekJ6KLHuxerb0qyrQwrQViV/oZzKSc/lpi6sgUrLdSN16MyWARBcOBWbnS4EAYytj67r1KGtqMUseaSvPCWLGr14u+pDZysmwFhc+i4+BmBWZgcATTXTFvO9qOS3qOlmShu68g7A6xa13F6A7yuq0ORnA9jZENU2dgDjc1IPGvMB4QNR7+AJ4IspQVObBjDmF+Wur6qxmdKAbpeBoEcGlCcIlLf7hx7lOzxOlYeaP+oTmmoYQFsGWhswGql+oMUMEInLgItHgEzRPvS43OHYVY+/fGwXGvIBkzKU6oAvZA8aywOPZEg9AvIxO9AXAZg4lKF1OAGBF71DX5jw5EyG2NkTMJ/3Co2ZcM8tQ819D8xYb9CVgA2nijSw0gs0tArBzk59aRBWQ91Dj30QjssIiofBd9wttFiGiTMZSWcTUC52B629Bg5lRB0Cr2tdQRvAfRlZ94FGN9AjA+oywupgHHWGzuRhTEbaGORnOkFTZYj4ZaT5I1BOdYBuAnEZcXFg89/QmAFtGXltMGL/ghZ9I7+g19fUV/wHtAJBvzggfxAqd0NXDPCII/KAsXIXNPXOIQd/efjvUndAmxB2xMH/zB+G5u3Qr2k4EMd0AOmvt0IrsCMOagcqt0FbJkyLg5oGs3ULNApecVReiP4NnTHALY7KDcbHv6BbDno1XTUGW39CWwa8F4flB6P1B3TRgQ/UeqSLN6GzAQd83f1dHAKzN6AfoCQOrARLN6Andr9GpiITT9/KwPLAye/QGATFTusAxsOCDKogxH6D7sOC2GkNq+B9GVALsP8LWgzAqdjJ4LJXCRlIpxAoXkOrtteT6yYmH8gg8kL1GroHU/1CoTSQBZ6CvSto0oRc/1DM7GNRLwdm8hK6DF5RgMI9j6jnheVLaBTWdaAwPy7KrUP0Alqbg4QWlPCU6JaAuZoFDcGaqEHh6RdRLQIhC/oBsppQzAXVN1UWlixoBjyqUIhozr8H3vyE1lYhpwnVnv8CpH9CZyAi2lAIPtK8pDPn0Cp8UoWqz/8zqJ5DGzCpCdWf/0lonEMzMK0J1Z//acicQ30wrgnVn/9x8LkkCWFRherPfxiSEgKvLlR//r0QkmWY14Xqz/88LEsTsqpQ/fm3RlQWoa4L1Z//OixKFNq6UP35vw9RycDGMKAYD3P9vEhlF9y6UP35d8OuvISELlR//hPwUqxh0oTqz781TbIKueFB4em4rb/Mq5IfMpRn0nOPIS+ADBUatvcz/w/0B/X2VgMACMNQ9AMnWOADKwT/QuahyZYcDcte7e146X9W+vFmWmEzOeOJGfjMCmWOEubMYw7no7wizHPHvMuMAMFIOo5IxsiOjJDLSOOM2cDYN44hxliMjGnL2OAOWMCgGgz84uBEDKDFIG8ORLhzLPO2Y5kK6PpMdJiBsR28nQkMOBEMJtTixISY4JUTZWPCgVXevesgCINhGG7dZPLEIg7GRRsMTsaoMTEOnmLUuBgn+e//JuTHGt0aKT3y3QIFpj6vO9ctnbnAmr9PIysefn0E0PfhkjW92HFtnQHULn5AAG9aISZGF3NaQYxVrInRrcVYBW4H5vkPEPIfuIV5UGXhClHT8Qv9oXQ/MckoTfb+wVTGqK8ZUl9+4mmUnpGj03pOmzlH5y/w5w6ZiAil+G9qA0KpkfWMTxKsJ6530wel3try9CwjSscg27BTDcw321gHjzyuEjj9IbwP1hPeDqHo2abP0pn5XMR/NhTB/fyo2gv3q0gh1JSkEHCrUuMSG1VxCdxDOtfR1ZDr4AGUwIUACi5JJZMyx1RHUgY3kIn0LBuFQk2EFlv7J3t0+id7JPi86wlJsfm9FUVbQrZR1LrPmQ0hKZfSXC7Fzr5LeD7uGoYBQBCGV56PS2g5ewGy+NkUNbjr9gAAAABJRU5ErkJggg==)
+              0 0 no-repeat;
+            background-size: contain;
+          }
+        }
+      }
+    }
+  }
+  .song_info {
+    position: relative;
+    height: vm(266);
+    text-align: center;
+    color: #fefefe;
+    margin-top: vm(50);
+    padding: 0 vm(80);
+    // background-color: rgb(180, 60, 60);
+    .song_h2 {
+      text-align: center;
+      font-size: vm(36);
+      font-weight: 400;
+      line-height: 1.1;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      b {
+        font-size: vm(30);
+        color: hsla(0, 0%, 100%, 0.6);
+      }
+    }
+    .song_lrc {
+      margin-top: vm(20);
+      .song_scroll {
+        height: vm(210);
+        // background-color: rgb(32, 92, 62);
+        overflow: hidden;
+        font-size: vm(32);
+        line-height: 2em;
+      }
+    }
+  }
+  .musicStreetWakeUp {
+    position: relative;
+    width: vm(200);
+    height: vm(60);
+    margin: 0 auto;
+    border: 1px solid hsla(0, 0%, 100%, 0.2);
+    border-radius: vm(50);
+    img {
+      width: 100%;
+    }
+  }
+  .footer-wrap {
+    position: absolute;
+    bottom: vm(160);
+    margin: 0 auto;
+    .open_app,
+    .download_app {
+      width: vm(350);
+      height: vm(80);
+      line-height: vm(80);
+      border-radius: vm(80);
+      border: 1px solid red;
+      text-align: center;
+      color: red;
+      font-size: vm(36);
+      letter-spacing: 10px;
+      margin-left: vm(20);
+    }
+    .download_app {
+      background-color: red;
+      color: #fff;
+    }
+  }
+}
 </style>

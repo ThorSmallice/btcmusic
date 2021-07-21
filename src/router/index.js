@@ -57,7 +57,7 @@ const routes = [
         name: 'Song',
         component: () => import('../views/Song.vue'),
         meta: {
-            title: "个人中心页"
+            title: "播放页"
         }
     }
 ]
