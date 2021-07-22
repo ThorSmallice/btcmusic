@@ -13,11 +13,10 @@
     </div>
     <div class="player_box">
       <div class="record_player">
-        <div class="player_center">
-          <div class="player_img" @click="play">
+        <div :class="['player_center',{'play-active': isplay } ]">
+          <div class="player_img" >
             <img
-              src="http://p2.music.126.net/-SebB9G58GprMCOSN4rMCQ==/109951166177053222.jpg?imageView&thumbnail=360y360&quality=75&tostatic=0"
-              alt=""
+              :src="musicPicurl"
             />
 
             <span class="player_btn"  v-show="!isplay" >
@@ -31,22 +30,17 @@
     </div>
     <div class="song_info">
       <h2 class="song_h2">
-        <span>☆偶像系列 (☆Lil uzi vert)</span>
+        <span>{{ musicDetails.name }}</span>
         <span>-</span>
-        <b>李佳隆/VVS_MUSIC</b>
+        <b>{{   musicDetails.alia == true?  musicDetails.alia[0]+author : author }}</b>
       </h2>
       <div class="song_lrc">
-        <div class="song_scroll">
-          <p class="song_scroll_item">他们等我出现等得太久</p>
-          <p class="song_scroll_item">他们等我出现等得太久</p>
-          <p class="song_scroll_item">他们等我出现等得太久</p>
-          <p class="song_scroll_item">他们等我出现等得太久</p>
-          <p class="song_scroll_item">他们等我出现等得太久</p>
-          <p class="song_scroll_item">他们等我出现等得太久</p>
-          <p class="song_scroll_item">他们等我出现等得太久</p>
-          <p class="song_scroll_item">他们等我出现等得太久</p>
-          <p class="song_scroll_item">他们等我出现等得太久</p>
-          <p class="song_scroll_item">他们等我出现等得太久</p>
+        <div class="song_scroll" ref="songScollUl">
+            <template v-for="(item, index) in musicObj.lrttext"> 
+                <p class="song_scroll_item" :key="index">
+                    {{item}}
+                </p>
+            </template> 
         </div>
       </div>
     </div>
@@ -60,7 +54,7 @@
       <span class="open_app">打开</span>
       <span class="download_app">下载</span>
     </div>
-    <audio id="musicAudio" ref="musicAudio" :autoplay="isplay">
+    <audio id="musicAudio" ref="musicAudio"  @timeupdate="runlrc">
         <template v-for="item in musicUrlArr">
             <source :src="item.url" :key="item.id" :type="`audio/${item.type}`">
         </template>
@@ -76,8 +70,18 @@
 export default {
     data: () => {
         return {
-            isplay: false,
-            musicUrlArr: [],
+            currentTime: 0,    // 当前播放的时间
+            currentLine: 0,     // 当前播放的歌词的行数
+            isplay: false,      // 播放状态
+            musicUrlArr: [],    // 音乐url列表
+            musicLrc:"",        // 歌词lrc内容
+            musicPicurl: "",    // 歌曲图片url
+            author:"",          // 作者
+            musicDetails:{},     // 歌曲详情
+            musicObj: {
+                lrcTime:[], // 歌词对应的时间列表
+                lrttext:[]  // 歌词列表
+            }        // 歌词对象
         };
     },
     methods: {
@@ -86,20 +90,63 @@ export default {
             this.isplay = !this.isplay; // 播放按钮显示状态更改 
             this.isplay? this.$refs.musicAudio.play() : this.$refs.musicAudio.pause();
         },
+        // 音乐播放触发的事件 歌词滚动
+        runlrc() { 
+            this.currentTime = this.$refs.musicAudio.currentTime; //  音乐一触发，把播放进度的时间同步给当前播放时间
+            if (this.currentTime < this.musicObj.lrcTime[this.currentLine+1] && this.currentTime > this.musicObj.lrcTime[this.currentLine]) {    // 当前播放时间与歌词列表的时间对比  相等的话 跳转到对应的歌词行数
+                let currentItemHeight =  this.$refs.songScollUl.children[this.currentLine].clientHeight;
+                this.$refs.songScollUl.style.transform = `translateY(-${this.currentLine * currentItemHeight - 30}px)`; 
+                this.$refs.songScollUl.children[this.currentLine].style.color = "rgb(255, 255, 255)"
+                if (this.currentLine >= 1 ) { 
+                    this.$refs.songScollUl.children[this.currentLine-1].style.color = ""
+                }
+
+                this.currentLine++; 
+            }
+        },
+        // 获取数据
         getMusicData() {
+            // 获取歌曲url
             this.axios.get(`/song/url?id=${this.$route.params.id}`).then((res) => {
-                this.musicUrlArr = res.data;
-                this.isplay = true;
+                this.musicUrlArr = res.data; 
             });
+            // 获取歌曲详情
+            this.axios.get(`/song/detail?ids=${this.$route.params.id}`).then(res => {
+                this.musicDetails = res.songs[0];
+                this.musicPicurl = res.songs[0].al.picUrl;
+                this.author = res.songs[0].ar[0].name;
+            });
+            // 获取歌词
+            this.axios.get(`/lyric?id=${this.$route.params.id}`).then(res => {
+                this.musicLrc = res.lrc.lyric;
+                // console.log(this.musicLrc);
+                let lrcarr = this.musicLrc.split('\n');
+                lrcarr.forEach((item,index) => { 
+                    this.musicObj.lrcTime[index] = (parseFloat(item.slice(item.indexOf("[")+1,item.indexOf(":")))*60 + parseFloat(item.slice(item.indexOf(":")+1,item.indexOf("]")))).toFixed(2)
+                    this.musicObj.lrttext[index] = item.slice(item.indexOf("]")+1,item.length).trim()
+                })
+                 
+            })
         }
     },
     created() {
         this.getMusicData();
-    }
+    },
+    mounted() {
+        console.log(this.$refs);
+    } 
 };
 </script>
 
 <style lang="scss" scoped>
+@keyframes rotateing {
+    from {
+        transform: translate(-50%,-50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%,-50%) rotate(360deg); 
+    }
+}
 #song {
     .bg {
         background-image: url("http://p2.music.126.net/-SebB9G58GprMCOSN4rMCQ==/109951166177053222.jpg?imageView&thumbnail=50y50&quality=15&tostatic=0");
@@ -199,11 +246,15 @@ export default {
             height: 150px;
             left: 50%;
             top: 50%;
-
-            margin: -75px 0 0 -75px;
+            transform: translate(-50%,-50%) rotate(0); 
             background: url(//s3.music.126.net/mobile-new/img/disc_default.png?ba7c53e…=)
             no-repeat;
             background-size: contain;
+            animation:  rotateing 20s linear infinite;
+            animation-play-state: paused;
+            &.play-active {
+                animation-play-state: running;
+            }
             .player_img {
             // position: absolute;
             // overflow: hidden;
@@ -257,14 +308,17 @@ export default {
         .song_lrc {
         margin-top: 25px;
         user-select: none;
-        height: 50px;
+        height: 80px;
         overflow: hidden;
         -webkit-mask:-webkit-linear-gradient(top,#000,#000 70%,rgba(0,0,0,0));
         .song_scroll { 
+            transition: transform .8s ease-out;
+            transform: translateY(30px);
             .song_scroll_item {
                 font-size: 16px;
                 padding-bottom: 8px;
-                line-height: 1.5; 
+                line-height: 1.5;
+                color: hsla(0,0%,100%,.6);
             }
         }
         }
