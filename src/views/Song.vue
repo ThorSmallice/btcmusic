@@ -54,7 +54,13 @@
       <span class="open_app">打开</span>
       <span class="download_app">下载</span>
     </div>
-    <audio id="musicAudio" ref="musicAudio"  @timeupdate="runlrc">
+    <audio 
+    id="musicAudio" 
+    ref="musicAudio"  
+    @timeupdate="runlrc" 
+    :autoplay="isplay" 
+    @play="addTransition" 
+    @ended="initPlayStatus">
         <template v-for="item in musicUrlArr">
             <source :src="item.url" :key="item.id" :type="`audio/${item.type}`">
         </template>
@@ -72,6 +78,7 @@ export default {
         return {
             currentTime: 0,    // 当前播放的时间
             currentLine: 0,     // 当前播放的歌词的行数
+            currentItemHeight:60,   // 当前歌词处在的高度
             isplay: false,      // 播放状态
             musicUrlArr: [],    // 音乐url列表
             musicLrc:"",        // 歌词lrc内容
@@ -81,7 +88,7 @@ export default {
             musicObj: {
                 lrcTime:[], // 歌词对应的时间列表
                 lrttext:[]  // 歌词列表
-            }        // 歌词对象
+            }         
         };
     },
     methods: {
@@ -94,21 +101,25 @@ export default {
         runlrc() { 
             this.currentTime = this.$refs.musicAudio.currentTime; //  音乐一触发，把播放进度的时间同步给当前播放时间
             if (this.currentTime < this.musicObj.lrcTime[this.currentLine+1] && this.currentTime > this.musicObj.lrcTime[this.currentLine]) {    // 当前播放时间与歌词列表的时间对比  相等的话 跳转到对应的歌词行数
-                let currentItemHeight =  this.$refs.songScollUl.children[this.currentLine].clientHeight;
-                this.$refs.songScollUl.style.transform = `translateY(-${this.currentLine * currentItemHeight - 30}px)`; 
+              
+                this.currentItemHeight -= this.$refs.songScollUl.children[this.currentLine].clientHeight
+                this.$refs.songScollUl.style.transform = `translateY(${ this.currentItemHeight}px)`; 
                 this.$refs.songScollUl.children[this.currentLine].style.color = "rgb(255, 255, 255)"
                 if (this.currentLine >= 1 ) { 
                     this.$refs.songScollUl.children[this.currentLine-1].style.color = ""
                 }
-
+               
                 this.currentLine++; 
             }
+            
+            
         },
         // 获取数据
         getMusicData() {
             // 获取歌曲url
             this.axios.get(`/song/url?id=${this.$route.params.id}`).then((res) => {
                 this.musicUrlArr = res.data; 
+                this.isplay = true;
             });
             // 获取歌曲详情
             this.axios.get(`/song/detail?ids=${this.$route.params.id}`).then(res => {
@@ -122,19 +133,39 @@ export default {
                 // console.log(this.musicLrc);
                 let lrcarr = this.musicLrc.split('\n');
                 lrcarr.forEach((item,index) => { 
-                    this.musicObj.lrcTime[index] = (parseFloat(item.slice(item.indexOf("[")+1,item.indexOf(":")))*60 + parseFloat(item.slice(item.indexOf(":")+1,item.indexOf("]")))).toFixed(2)
-                    this.musicObj.lrttext[index] = item.slice(item.indexOf("]")+1,item.length).trim()
+                    this.musicObj.lrcTime[index] = (parseFloat(item.slice(item.indexOf("[")+1,item.indexOf(":")))*60 + parseFloat(item.slice(item.indexOf(":")+1,item.indexOf("]")))).toFixed(2);
+                    this.musicObj.lrttext[index] = item.slice(item.indexOf("]")+1,item.length).trim();
                 })
                  
+
+                this.musicObj.lrcTime.splice(this.musicObj.lrcTime.length - 1, 1);     // 删除最后一个空的
+                this.musicObj.lrttext.splice(this.musicObj.lrttext.length - 1, 1);      // 删除最后一个空的
+                 
+                 
             })
+        },
+        // 开始播放时添加动画
+        addTransition() {
+            this.$refs.songScollUl.style.transition = "transform .8s ease-out";
+        },
+        // 结束播放时
+        initPlayStatus() {
+            // if (this.currentLine < this.musicObj.lrttext.length) {
+            //     this.currentLine = this.musicObj.lrttext.length;
+            //     this.currentItemHeight -= this.$refs.songScollUl.children[this.currentLine].clientHeight;
+            //     this.$refs.songScollUl.style.transform = `translateY(${this.currentItemHeight}px)`
+            // }
+            this.currentTime = 0;       // 重置当前播放时间
+            this.currentLine = 0;         // 重置当前播放行数
+            this.currentItemHeight = 60; // 重置当前歌词滚动高度
+            this.$refs.songScollUl.style.transition = "none"; 
+            this.$refs.songScollUl.style.transform = `translateY(30px)`; 
+            this.isplay = false;  // 播放状态停止
         }
     },
     created() {
         this.getMusicData();
-    },
-    mounted() {
-        console.log(this.$refs);
-    } 
+    }
 };
 </script>
 
@@ -312,7 +343,7 @@ export default {
         overflow: hidden;
         -webkit-mask:-webkit-linear-gradient(top,#000,#000 70%,rgba(0,0,0,0));
         .song_scroll { 
-            transition: transform .8s ease-out;
+            
             transform: translateY(30px);
             .song_scroll_item {
                 font-size: 16px;
