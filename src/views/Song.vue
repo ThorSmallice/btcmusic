@@ -56,7 +56,342 @@
       <span class="open_app">打开</span>
       <span class="download_app">下载</span>
     </div>
-    <audio :src="playList" autoplay></audio>
+    <audio
+      :src="playList"
+      autoplay
+      @pause="is_stop = true"
+      @play="is_stop = false"
+      ref="audio"
+    ></audio>
+
+    <div class="song_car" @click="carUp" :style="{ top: carTop + 'px' }">
+      <ul class="song_nav">
+        <li class="active">相关歌单</li>
+        <li>相似歌曲</li>
+        <li>精彩评论</li>
+      </ul>
+      <div class="scroll_box">
+        <div class="song_list">
+          <h3 class="scroll_box_title">包含这首歌的歌单</h3>
+          <div class="list_box">
+            <ul>
+              <li>
+                <div class="img_box">
+                  <img
+                    src="http://p2.music.126.net/c62r_l2eYC_ydpR8f2MimQ==/109951165094955243.jpg?imageView=1&type=webp&thumbnail=246x0"
+                    alt=""
+                  />
+                  <span class="play_count">
+                    <svg class="icon icon-erji" aria-hidden="true">
+                      <use xlink:href="#icon-erji"></use></svg
+                    >1261.1万</span
+                  >
+                </div>
+                <h4>『治愈基地』夜里的故事总是那么丰富</h4>
+                <p>by 勒溪</p>
+              </li>
+              <li>
+                <div class="img_box">
+                  <img
+                    src="http://p2.music.126.net/c62r_l2eYC_ydpR8f2MimQ==/109951165094955243.jpg?imageView=1&type=webp&thumbnail=246x0"
+                    alt=""
+                  />
+                  <span class="play_count"
+                    ><svg class="icon icon-erji" aria-hidden="true">
+                      <use xlink:href="#icon-erji"></use></svg
+                    >1261.1万</span
+                  >
+                </div>
+                <h4>『治愈基地』夜里的故事总是那么丰富</h4>
+                <p>by 勒溪</p>
+              </li>
+              <li>
+                <div class="img_box">
+                  <img
+                    src="http://p2.music.126.net/c62r_l2eYC_ydpR8f2MimQ==/109951165094955243.jpg?imageView=1&type=webp&thumbnail=246x0"
+                    alt=""
+                  />
+                  <span class="play_count"
+                    ><svg class="icon icon-erji" aria-hidden="true">
+                      <use xlink:href="#icon-erji"></use></svg
+                    >1261.1万</span
+                  >
+                </div>
+                <h4>『治愈基地』夜里的故事总是那么丰富</h4>
+                <p>by 勒溪</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="more_songs">
+          <h3 class="scroll_box_title">喜欢这首歌的人也听</h3>
+          <div class="moreSongs_list">
+            <ul>
+              <li>
+                <div class="lt">
+                  <img
+                    src="http://p1.music.126.net/KUUrg-bbybCdG_EwDSnNFA==/109951164176658680.jpg?imageView=1&type=webp&thumbnail=120x0"
+                    alt=""
+                  />
+                </div>
+                <div class="cen">
+                  <h3>有点甜</h3>
+                  <p>汪苏泷 / By2 - 万有引力</p>
+                </div>
+                <div class="rt">
+                  <svg class="icon icon-bofang" aria-hidden="true">
+                    <use xlink:href="#icon-bofang"></use>
+                  </svg>
+                </div>
+              </li>
+              <li>
+                <div class="lt">
+                  <img
+                    src="http://p1.music.126.net/KUUrg-bbybCdG_EwDSnNFA==/109951164176658680.jpg?imageView=1&type=webp&thumbnail=120x0"
+                    alt=""
+                  />
+                </div>
+                <div class="cen">
+                  <h3>有点甜</h3>
+                  <p>汪苏泷 / By2 - 万有引力</p>
+                </div>
+                <div class="rt">
+                  <svg class="icon icon-bofang" aria-hidden="true">
+                    <use xlink:href="#icon-bofang"></use>
+                  </svg>
+                </div>
+              </li>
+              <li>
+                <div class="lt">
+                  <img
+                    src="http://p1.music.126.net/KUUrg-bbybCdG_EwDSnNFA==/109951164176658680.jpg?imageView=1&type=webp&thumbnail=120x0"
+                    alt=""
+                  />
+                </div>
+                <div class="cen">
+                  <h3>有点甜</h3>
+                  <p>汪苏泷 / By2 - 万有引力</p>
+                </div>
+                <div class="rt">
+                  <svg class="icon icon-bofang" aria-hidden="true">
+                    <use xlink:href="#icon-bofang"></use>
+                  </svg>
+                </div>
+              </li>
+              <li>
+                <div class="lt">
+                  <img
+                    src="http://p1.music.126.net/KUUrg-bbybCdG_EwDSnNFA==/109951164176658680.jpg?imageView=1&type=webp&thumbnail=120x0"
+                    alt=""
+                  />
+                </div>
+                <div class="cen">
+                  <h3>有点甜</h3>
+                  <p>汪苏泷 / By2 - 万有引力</p>
+                </div>
+                <div class="rt">
+                  <svg class="icon icon-bofang" aria-hidden="true">
+                    <use xlink:href="#icon-bofang"></use>
+                  </svg>
+                </div>
+              </li>
+
+              <li>
+                <div class="lt">
+                  <img
+                    src="http://p1.music.126.net/KUUrg-bbybCdG_EwDSnNFA==/109951164176658680.jpg?imageView=1&type=webp&thumbnail=120x0"
+                    alt=""
+                  />
+                </div>
+                <div class="cen">
+                  <h3>有点甜</h3>
+                  <p>汪苏泷 / By2 - 万有引力</p>
+                </div>
+                <div class="rt">
+                  <svg class="icon icon-bofang" aria-hidden="true">
+                    <use xlink:href="#icon-bofang"></use>
+                  </svg>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="user_comment">
+          <h3 class="scroll_box_title">精彩评论</h3>
+          <div class="comment_list">
+            <div class="comment_box">
+              <div class="header_img">
+                <img
+                  src="http://p2.music.126.net/q6xXLgwHDy4Z6E8VMjjKyQ==/109951165849817945.jpg?imageView=1&type=webp&thumbnail=90x0"
+                  alt=""
+                />
+              </div>
+              <div class="comment_rt">
+                <div class="user_name">
+                  <div class="lt">
+                    <span
+                      >焕焕焕焕焕o<svg class="icon icon-vip" aria-hidden="true">
+                        <use xlink:href="#icon-vip"></use></svg
+                    ></span>
+                    <p>2021年7月19日</p>
+                  </div>
+                  <div class="rt">
+                    1609
+                    <svg class="icon icon-dianzan" aria-hidden="true">
+                      <use xlink:href="#icon-dianzan"></use>
+                    </svg>
+                  </div>
+                </div>
+                <div class="comment">
+                  有汪苏泷汪苏泷声音的剧，我都追！还有三天。
+                </div>
+              </div>
+            </div>
+            <div class="comment_box">
+              <div class="header_img">
+                <img
+                  src="http://p2.music.126.net/q6xXLgwHDy4Z6E8VMjjKyQ==/109951165849817945.jpg?imageView=1&type=webp&thumbnail=90x0"
+                  alt=""
+                />
+              </div>
+              <div class="comment_rt">
+                <div class="user_name">
+                  <div class="lt">
+                    <span
+                      >焕焕焕焕焕o<svg class="icon icon-vip" aria-hidden="true">
+                        <use xlink:href="#icon-vip"></use></svg
+                    ></span>
+                    <p>2021年7月19日</p>
+                  </div>
+                  <div class="rt">
+                    1609
+                    <svg class="icon icon-dianzan" aria-hidden="true">
+                      <use xlink:href="#icon-dianzan"></use>
+                    </svg>
+                  </div>
+                </div>
+                <div class="comment">
+                  有汪苏泷汪苏泷声音的剧，我都追！还有三天。
+                </div>
+              </div>
+            </div>
+            <div class="comment_box">
+              <div class="header_img">
+                <img
+                  src="http://p2.music.126.net/q6xXLgwHDy4Z6E8VMjjKyQ==/109951165849817945.jpg?imageView=1&type=webp&thumbnail=90x0"
+                  alt=""
+                />
+              </div>
+              <div class="comment_rt">
+                <div class="user_name">
+                  <div class="lt">
+                    <span
+                      >焕焕焕焕焕o<svg class="icon icon-vip" aria-hidden="true">
+                        <use xlink:href="#icon-vip"></use></svg
+                    ></span>
+                    <p>2021年7月19日</p>
+                  </div>
+                  <div class="rt">
+                    1609
+                    <svg class="icon icon-dianzan" aria-hidden="true">
+                      <use xlink:href="#icon-dianzan"></use>
+                    </svg>
+                  </div>
+                </div>
+                <div class="comment">
+                  有汪苏泷汪苏泷声音的剧，我都追！还有三天。
+                </div>
+              </div>
+            </div>
+            <div class="comment_box">
+              <div class="header_img">
+                <img
+                  src="http://p2.music.126.net/q6xXLgwHDy4Z6E8VMjjKyQ==/109951165849817945.jpg?imageView=1&type=webp&thumbnail=90x0"
+                  alt=""
+                />
+              </div>
+              <div class="comment_rt">
+                <div class="user_name">
+                  <div class="lt">
+                    <span
+                      >焕焕焕焕焕o<svg class="icon icon-vip" aria-hidden="true">
+                        <use xlink:href="#icon-vip"></use></svg
+                    ></span>
+                    <p>2021年7月19日</p>
+                  </div>
+                  <div class="rt">
+                    1609
+                    <svg class="icon icon-dianzan" aria-hidden="true">
+                      <use xlink:href="#icon-dianzan"></use>
+                    </svg>
+                  </div>
+                </div>
+                <div class="comment">
+                  有汪苏泷汪苏泷声音的剧，我都追！还有三天。
+                </div>
+              </div>
+            </div>
+            <div class="comment_box">
+              <div class="header_img">
+                <img
+                  src="http://p2.music.126.net/q6xXLgwHDy4Z6E8VMjjKyQ==/109951165849817945.jpg?imageView=1&type=webp&thumbnail=90x0"
+                  alt=""
+                />
+              </div>
+              <div class="comment_rt">
+                <div class="user_name">
+                  <div class="lt">
+                    <span
+                      >焕焕焕焕焕o<svg class="icon icon-vip" aria-hidden="true">
+                        <use xlink:href="#icon-vip"></use></svg
+                    ></span>
+                    <p>2021年7月19日</p>
+                  </div>
+                  <div class="rt">
+                    1609
+                    <svg class="icon icon-dianzan" aria-hidden="true">
+                      <use xlink:href="#icon-dianzan"></use>
+                    </svg>
+                  </div>
+                </div>
+                <div class="comment">
+                  有汪苏泷汪苏泷声音的剧，我都追！还有三天。
+                </div>
+              </div>
+            </div>
+            <div class="comment_box">
+              <div class="header_img">
+                <img
+                  src="http://p2.music.126.net/q6xXLgwHDy4Z6E8VMjjKyQ==/109951165849817945.jpg?imageView=1&type=webp&thumbnail=90x0"
+                  alt=""
+                />
+              </div>
+              <div class="comment_rt">
+                <div class="user_name">
+                  <div class="lt">
+                    <span
+                      >焕焕焕焕焕o<svg class="icon icon-vip" aria-hidden="true">
+                        <use xlink:href="#icon-vip"></use></svg
+                    ></span>
+                    <p>2021年7月19日</p>
+                  </div>
+                  <div class="rt">
+                    1609
+                    <svg class="icon icon-dianzan" aria-hidden="true">
+                      <use xlink:href="#icon-dianzan"></use>
+                    </svg>
+                  </div>
+                </div>
+                <div class="comment">
+                  有汪苏泷汪苏泷声音的剧，我都追！还有三天。
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="end_open_more">打开云音乐查看更多精彩评论</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -64,13 +399,30 @@
 export default {
   data: () => {
     return {
-      isplay: true,
+      isplay: false,
       playList: [],
+      carTop: 80,
+      isUp: true,
+      is_stop: true,
     };
   },
   methods: {
     play() {
       this.isplay = !this.isplay;
+      if (this.is_stop) {
+        this.$refs.audio.play();
+      } else {
+        this.$refs.audio.pause();
+      }
+    },
+    carUp() {
+      if (this.isUp) {
+        this.isUp = false;
+        this.carTop = -488;
+      } else {
+        this.isUp = true;
+        this.carTop = 80;
+      }
     },
   },
   created() {
@@ -84,6 +436,8 @@ export default {
 
 <style lang="scss" scoped>
 #song {
+  overflow: hidden;
+  height: 100vh;
   .bg {
     background-image: url("http://p2.music.126.net/-SebB9G58GprMCOSN4rMCQ==/109951166177053222.jpg?imageView&thumbnail=50y50&quality=15&tostatic=0");
     opacity: 1;
@@ -148,7 +502,8 @@ export default {
   }
   .player_box {
     position: relative;
-    padding-top: vm(230);
+    padding-top: vm(200);
+
     .record_player {
       position: relative;
       margin: 0 auto;
@@ -199,6 +554,7 @@ export default {
           // margin: -75px 0 0 -75px;
           img {
             width: 100%;
+            transform: rotate(60deg);
           }
           .player_btn {
             position: absolute;
@@ -278,6 +634,174 @@ export default {
     .download_app {
       background-color: red;
       color: #fff;
+    }
+  }
+  .song_car {
+    position: relative;
+    // top: vm(-970);
+    height: 788px;
+    overflow: auto;
+    background-color: rgba(255, 255, 255);
+    border-radius: 30px 30px 0 0;
+    padding: vm(65) vm(30);
+    .song_nav {
+      // position: absolute;
+      // top: 0;
+      // left: 0;
+      display: flex;
+      justify-content: space-around;
+      font-size: vm(32);
+
+      li {
+        height: vm(60);
+        text-align: center;
+        width: 5em;
+      }
+      .active {
+        color: red;
+        border-bottom: 2px solid red;
+      }
+      &::before {
+        position: absolute;
+        left: 50%;
+        top: 8px;
+        transform: translateX(-50%);
+        content: "";
+        display: block;
+        width: 54px;
+        height: 5px;
+        border-radius: 5px;
+        background: rgba(51, 51, 51, 0.1);
+      }
+    }
+    .song_list {
+      margin-top: vm(5);
+      ul {
+        display: flex;
+        justify-content: space-between;
+        margin-top: vm(20);
+        li {
+          width: vm(218);
+          .img_box {
+            position: relative;
+            .icon-erji {
+              font-size: vm(30);
+            }
+            img {
+              width: 100%;
+            }
+            .play_count {
+              position: absolute;
+              top: 5px;
+              right: 5px;
+              color: #fff;
+              font-size: vm(16);
+            }
+          }
+          h4 {
+            font-size: vm(16);
+            font-weight: 400;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+          }
+          p {
+            color: gray;
+            font-size: vm(16);
+          }
+        }
+      }
+    }
+    .more_songs {
+      margin-top: vm(50);
+      .scroll_box_title {
+        margin-bottom: vm(30);
+      }
+      .moreSongs_list {
+        ul {
+          li {
+            display: flex;
+            .lt {
+              width: vm(80);
+              // float: left;
+              margin-right: vm(20);
+              img {
+                width: 100%;
+              }
+            }
+          }
+          .cen {
+            // float: left;
+            H3 {
+              font-weight: 400;
+              font-size: vm(30);
+            }
+            p {
+              color: #c1c1c1;
+              font-size: vm(26);
+              margin-top: vm(3);
+            }
+          }
+          .rt {
+            // float: left;
+            font-size: vm(55);
+            position: absolute;
+            right: vm(30);
+          }
+        }
+      }
+    }
+    .user_comment {
+      .scroll_box_title {
+        margin-top: vm(30);
+        margin-bottom: vm(30);
+      }
+      .comment_box {
+        display: flex;
+        .header_img {
+          width: vm(80);
+          height: vm(80);
+          border-radius: 50%;
+          overflow: hidden;
+          margin-right: vm(20);
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .comment_rt {
+          .user_name {
+            display: flex;
+            justify-content: space-between;
+
+            .icon-vip {
+              font-size: vm(60);
+              vertical-align: middle;
+              position: absolute;
+            }
+            p {
+              font-size: vm(16);
+              color: #c1c1c1;
+            }
+          }
+          .comment {
+            padding-bottom: vm(50);
+            border-bottom: 1px solid #c1c1c1;
+            margin-top: vm(20);
+            margin-bottom: vm(30);
+          }
+        }
+      }
+      .end_open_more {
+        height: vm(80);
+        line-height: vm(80);
+        border-radius: vm(80);
+        color: #fff;
+        text-align: center;
+
+        background-color: #c1c1c1;
+        margin-bottom: vm(300);
+      }
     }
   }
 }
