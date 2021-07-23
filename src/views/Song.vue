@@ -13,36 +13,34 @@
     </div>
     <div class="player_box">
       <div class="record_player">
-        <div class="player_center">
-          <div class="player_img" @click="play">
-            <img
-              src="http://p2.music.126.net/-SebB9G58GprMCOSN4rMCQ==/109951166177053222.jpg?imageView&thumbnail=360y360&quality=75&tostatic=0"
-              alt=""
-            />
+        <div :class="['player_center', { 'play-active': isplay }]">
+          <div class="player_img">
+            <img :src="musicPicurl" />
 
-            <span class="player_btn" v-show="isplay"> </span>
+            <span class="player_btn" v-show="!isplay">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-bofang"></use>
+              </svg>
+            </span>
           </div>
         </div>
       </div>
     </div>
     <div class="song_info">
       <h2 class="song_h2">
-        <span>☆偶像系列 (☆Lil uzi vert)</span>
+        <span>{{ musicDetails.name }}</span>
         <span>-</span>
-        <b>李佳隆/VVS_MUSIC</b>
+        <b>{{
+          musicDetails.alia == true ? musicDetails.alia[0] + author : author
+        }}</b>
       </h2>
       <div class="song_lrc">
-        <div class="song_scroll">
-          <p>他们等我出现等得太久</p>
-          <p>他们等我出现等得太久</p>
-          <p>他们等我出现等得太久</p>
-          <p>他们等我出现等得太久</p>
-          <p>他们等我出现等得太久</p>
-          <p>他们等我出现等得太久</p>
-          <p>他们等我出现等得太久</p>
-          <p>他们等我出现等得太久</p>
-          <p>他们等我出现等得太久</p>
-          <p>他们等我出现等得太久</p>
+        <div class="song_scroll" ref="songScollUl">
+          <template v-for="(item, index) in musicObj.lrttext">
+            <p class="song_scroll_item" :key="index">
+              {{ item }}
+            </p>
+          </template>
         </div>
       </div>
     </div>
@@ -57,12 +55,19 @@
       <span class="download_app">下载</span>
     </div>
     <audio
-      :src="playList"
-      autoplay
-      @pause="is_stop = true"
-      @play="is_stop = false"
-      ref="audio"
-    ></audio>
+      id="musicAudio"
+      ref="musicAudio"
+      @timeupdate="runlrc"
+      :autoplay="isplay"
+      @play="addTransition"
+      @ended="initPlayStatus"
+    >
+      <template v-for="item in musicUrlArr">
+        <source :src="item.url" :key="item.id" :type="`audio/${item.type}`" />
+      </template>
+    </audio>
+
+    <div class="control-play" @click="play"></div>
 
     <div class="song_car" @click="carUp" :style="{ top: carTop + 'px' }">
       <ul class="song_nav">
@@ -399,42 +404,132 @@
 export default {
   data: () => {
     return {
-      isplay: false,
-      playList: [],
       carTop: 80,
       isUp: true,
-      is_stop: true,
+      currentTime: 0, // 当前播放的时间
+      currentLine: 0, // 当前播放的歌词的行数
+      currentItemHeight: 60, // 当前歌词处在的高度
+      isplay: false, // 播放状态
+      musicUrlArr: [], // 音乐url列表
+      musicLrc: "", // 歌词lrc内容
+      musicPicurl: "", // 歌曲图片url
+      author: "", // 作者
+      musicDetails: {}, // 歌曲详情
+      musicObj: {
+        lrcTime: [], // 歌词对应的时间列表
+        lrttext: [], // 歌词列表
+      },
     };
   },
   methods: {
+    // 播放音乐
     play() {
-      this.isplay = !this.isplay;
-      if (this.is_stop) {
-        this.$refs.audio.play();
-      } else {
-        this.$refs.audio.pause();
+      this.isplay = !this.isplay; // 播放按钮显示状态更改
+      this.isplay
+        ? this.$refs.musicAudio.play()
+        : this.$refs.musicAudio.pause();
+    },
+    // 音乐播放触发的事件 歌词滚动
+    runlrc() {
+      this.currentTime = this.$refs.musicAudio.currentTime; //  音乐一触发，把播放进度的时间同步给当前播放时间
+      if (
+        this.currentTime < this.musicObj.lrcTime[this.currentLine + 1] &&
+        this.currentTime > this.musicObj.lrcTime[this.currentLine]
+      ) {
+        // 当前播放时间与歌词列表的时间对比  相等的话 跳转到对应的歌词行数
+
+        this.currentItemHeight -=
+          this.$refs.songScollUl.children[this.currentLine].clientHeight;
+        this.$refs.songScollUl.style.transform = `translateY(${this.currentItemHeight}px)`;
+        this.$refs.songScollUl.children[this.currentLine].style.color =
+          "rgb(255, 255, 255)";
+        if (this.currentLine >= 1) {
+          this.$refs.songScollUl.children[this.currentLine - 1].style.color =
+            "";
+        }
+
+        this.currentLine++;
       }
     },
     carUp() {
+      this.isUp = !this.isUp;
       if (this.isUp) {
-        this.isUp = false;
+        // this.isUp = false;
         this.carTop = -488;
       } else {
-        this.isUp = true;
+        // this.isUp = true;
         this.carTop = 80;
       }
     },
+    // 获取数据
+    getMusicData() {
+      // 获取歌曲url
+      this.axios.get(`/song/url?id=${this.$route.params.id}`).then((res) => {
+        this.musicUrlArr = res.data;
+        this.isplay = true;
+      });
+      // 获取歌曲详情
+      this.axios
+        .get(`/song/detail?ids=${this.$route.params.id}`)
+        .then((res) => {
+          this.musicDetails = res.songs[0];
+          this.musicPicurl = res.songs[0].al.picUrl;
+          this.author = res.songs[0].ar[0].name;
+        });
+      // 获取歌词
+      this.axios.get(`/lyric?id=${this.$route.params.id}`).then((res) => {
+        this.musicLrc = res.lrc.lyric;
+        // console.log(this.musicLrc);
+        let lrcarr = this.musicLrc.split("\n");
+        lrcarr.forEach((item, index) => {
+          this.musicObj.lrcTime[index] = (
+            parseFloat(item.slice(item.indexOf("[") + 1, item.indexOf(":"))) *
+              60 +
+            parseFloat(item.slice(item.indexOf(":") + 1, item.indexOf("]")))
+          ).toFixed(2);
+          this.musicObj.lrttext[index] = item
+            .slice(item.indexOf("]") + 1, item.length)
+            .trim();
+        });
+
+        this.musicObj.lrcTime.splice(this.musicObj.lrcTime.length - 1, 1); // 删除最后一个空的
+        this.musicObj.lrttext.splice(this.musicObj.lrttext.length - 1, 1); // 删除最后一个空的
+      });
+    },
+    // 开始播放时添加动画
+    addTransition() {
+      this.$refs.songScollUl.style.transition = "transform .8s ease-out";
+    },
+    // 结束播放时
+    initPlayStatus() {
+      // if (this.currentLine < this.musicObj.lrttext.length) {
+      //     this.currentLine = this.musicObj.lrttext.length;
+      //     this.currentItemHeight -= this.$refs.songScollUl.children[this.currentLine].clientHeight;
+      //     this.$refs.songScollUl.style.transform = `translateY(${this.currentItemHeight}px)`
+      // }
+      this.currentTime = 0; // 重置当前播放时间
+      this.currentLine = 0; // 重置当前播放行数
+      this.currentItemHeight = 60; // 重置当前歌词滚动高度
+      this.$refs.songScollUl.style.transition = "none";
+      this.$refs.songScollUl.style.transform = `translateY(30px)`;
+      this.isplay = false; // 播放状态停止
+    },
   },
   created() {
-    this.axios.get("/song/url?id=33894312").then((res) => {
-      this.playList = res.data[0].url;
-      console.log(this.playList);
-    });
+    this.getMusicData();
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@keyframes rotateing {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
 #song {
   overflow: hidden;
   height: 100vh;
@@ -502,8 +597,7 @@ export default {
   }
   .player_box {
     position: relative;
-    padding-top: vm(200);
-
+    padding-top: vm(230);
     .record_player {
       position: relative;
       margin: 0 auto;
@@ -537,11 +631,15 @@ export default {
         height: 150px;
         left: 50%;
         top: 50%;
-
-        margin: -75px 0 0 -75px;
+        transform: translate(-50%, -50%) rotate(0);
         background: url(//s3.music.126.net/mobile-new/img/disc_default.png?ba7c53e…=)
           no-repeat;
         background-size: contain;
+        animation: rotateing 20s linear infinite;
+        animation-play-state: paused;
+        &.play-active {
+          animation-play-state: running;
+        }
         .player_img {
           // position: absolute;
           // overflow: hidden;
@@ -554,7 +652,6 @@ export default {
           // margin: -75px 0 0 -75px;
           img {
             width: 100%;
-            transform: rotate(60deg);
           }
           .player_btn {
             position: absolute;
@@ -573,33 +670,45 @@ export default {
   }
   .song_info {
     position: relative;
-    height: vm(266);
     text-align: center;
+    user-select: none;
+    margin-top: 25px;
+    padding: 0 35px;
     color: #fefefe;
-    margin-top: vm(50);
-    padding: 0 vm(80);
+    text-align: center;
     // background-color: rgb(180, 60, 60);
     .song_h2 {
-      text-align: center;
-      font-size: vm(36);
+      font-size: 18px;
       font-weight: 400;
       line-height: 1.1;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
       b {
-        font-size: vm(30);
+        font-size: 16px;
+        font-weight: 500;
         color: hsla(0, 0%, 100%, 0.6);
       }
     }
     .song_lrc {
-      margin-top: vm(20);
+      margin-top: 25px;
+      user-select: none;
+      height: 80px;
+      overflow: hidden;
+      -webkit-mask: -webkit-linear-gradient(
+        top,
+        #000,
+        #000 70%,
+        rgba(0, 0, 0, 0)
+      );
       .song_scroll {
-        height: vm(210);
-        // background-color: rgb(32, 92, 62);
-        overflow: hidden;
-        font-size: vm(32);
-        line-height: 2em;
+        transform: translateY(30px);
+        .song_scroll_item {
+          font-size: 16px;
+          padding-bottom: 8px;
+          line-height: 1.5;
+          color: hsla(0, 0%, 100%, 0.6);
+        }
       }
     }
   }
@@ -607,7 +716,7 @@ export default {
     position: relative;
     width: vm(200);
     height: vm(60);
-    margin: 0 auto;
+    margin: 15px auto 0;
     border: 1px solid hsla(0, 0%, 100%, 0.2);
     border-radius: vm(50);
     img {
@@ -616,7 +725,7 @@ export default {
   }
   .footer-wrap {
     position: absolute;
-    bottom: vm(160);
+    bottom: 80px;
     margin: 0 auto;
     .open_app,
     .download_app {
@@ -635,173 +744,185 @@ export default {
       background-color: red;
       color: #fff;
     }
+    audio {
+      display: none;
+    }
   }
-  .song_car {
-    position: relative;
-    // top: vm(-970);
-    height: 788px;
-    overflow: auto;
-    background-color: rgba(255, 255, 255);
-    border-radius: 30px 30px 0 0;
-    padding: vm(65) vm(30);
-    .song_nav {
-      // position: absolute;
-      // top: 0;
-      // left: 0;
-      display: flex;
-      justify-content: space-around;
-      font-size: vm(32);
+  .control-play {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    width: 100%;
+    height: 80%;
+    background-color: transparent;
+  }
+}
+.song_car {
+  position: relative;
+  // top: vm(-970);
+  height: 788px;
+  overflow: auto;
+  background-color: rgba(255, 255, 255);
+  border-radius: 30px 30px 0 0;
+  padding: vm(65) vm(30);
+  .song_nav {
+    // position: absolute;
+    // top: 0;
+    // left: 0;
+    display: flex;
+    justify-content: space-around;
+    font-size: vm(32);
 
+    li {
+      height: vm(60);
+      text-align: center;
+      width: 5em;
+    }
+    .active {
+      color: red;
+      border-bottom: 2px solid red;
+    }
+    &::before {
+      position: absolute;
+      left: 50%;
+      top: 8px;
+      transform: translateX(-50%);
+      content: "";
+      display: block;
+      width: 54px;
+      height: 5px;
+      border-radius: 5px;
+      background: rgba(51, 51, 51, 0.1);
+    }
+  }
+  .song_list {
+    margin-top: vm(5);
+    ul {
+      display: flex;
+      justify-content: space-between;
+      margin-top: vm(20);
       li {
-        height: vm(60);
-        text-align: center;
-        width: 5em;
-      }
-      .active {
-        color: red;
-        border-bottom: 2px solid red;
-      }
-      &::before {
-        position: absolute;
-        left: 50%;
-        top: 8px;
-        transform: translateX(-50%);
-        content: "";
-        display: block;
-        width: 54px;
-        height: 5px;
-        border-radius: 5px;
-        background: rgba(51, 51, 51, 0.1);
+        width: vm(218);
+        .img_box {
+          position: relative;
+          .icon-erji {
+            font-size: vm(30);
+          }
+          img {
+            width: 100%;
+          }
+          .play_count {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: #fff;
+            font-size: vm(16);
+          }
+        }
+        h4 {
+          font-size: vm(16);
+          font-weight: 400;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+        p {
+          color: gray;
+          font-size: vm(16);
+        }
       }
     }
-    .song_list {
-      margin-top: vm(5);
+  }
+  .more_songs {
+    margin-top: vm(50);
+    .scroll_box_title {
+      margin-bottom: vm(30);
+    }
+    .moreSongs_list {
       ul {
-        display: flex;
-        justify-content: space-between;
-        margin-top: vm(20);
         li {
-          width: vm(218);
-          .img_box {
-            position: relative;
-            .icon-erji {
-              font-size: vm(30);
-            }
+          display: flex;
+          .lt {
+            width: vm(80);
+            // float: left;
+            margin-right: vm(20);
             img {
               width: 100%;
             }
-            .play_count {
-              position: absolute;
-              top: 5px;
-              right: 5px;
-              color: #fff;
-              font-size: vm(16);
-            }
           }
-          h4 {
-            font-size: vm(16);
+        }
+        .cen {
+          // float: left;
+          H3 {
             font-weight: 400;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
+            font-size: vm(30);
           }
           p {
-            color: gray;
-            font-size: vm(16);
+            color: #c1c1c1;
+            font-size: vm(26);
+            margin-top: vm(3);
           }
+        }
+        .rt {
+          // float: left;
+          font-size: vm(55);
+          position: absolute;
+          right: vm(30);
         }
       }
     }
-    .more_songs {
-      margin-top: vm(50);
-      .scroll_box_title {
-        margin-bottom: vm(30);
-      }
-      .moreSongs_list {
-        ul {
-          li {
-            display: flex;
-            .lt {
-              width: vm(80);
-              // float: left;
-              margin-right: vm(20);
-              img {
-                width: 100%;
-              }
-            }
-          }
-          .cen {
-            // float: left;
-            H3 {
-              font-weight: 400;
-              font-size: vm(30);
-            }
-            p {
-              color: #c1c1c1;
-              font-size: vm(26);
-              margin-top: vm(3);
-            }
-          }
-          .rt {
-            // float: left;
-            font-size: vm(55);
-            position: absolute;
-            right: vm(30);
-          }
-        }
-      }
+  }
+  .user_comment {
+    .scroll_box_title {
+      margin-top: vm(30);
+      margin-bottom: vm(30);
     }
-    .user_comment {
-      .scroll_box_title {
-        margin-top: vm(30);
-        margin-bottom: vm(30);
-      }
-      .comment_box {
-        display: flex;
-        .header_img {
-          width: vm(80);
-          height: vm(80);
-          border-radius: 50%;
-          overflow: hidden;
-          margin-right: vm(20);
-          img {
-            width: 100%;
-            height: 100%;
-          }
-        }
-        .comment_rt {
-          .user_name {
-            display: flex;
-            justify-content: space-between;
-
-            .icon-vip {
-              font-size: vm(60);
-              vertical-align: middle;
-              position: absolute;
-            }
-            p {
-              font-size: vm(16);
-              color: #c1c1c1;
-            }
-          }
-          .comment {
-            padding-bottom: vm(50);
-            border-bottom: 1px solid #c1c1c1;
-            margin-top: vm(20);
-            margin-bottom: vm(30);
-          }
-        }
-      }
-      .end_open_more {
+    .comment_box {
+      display: flex;
+      .header_img {
+        width: vm(80);
         height: vm(80);
-        line-height: vm(80);
-        border-radius: vm(80);
-        color: #fff;
-        text-align: center;
-
-        background-color: #c1c1c1;
-        margin-bottom: vm(300);
+        border-radius: 50%;
+        overflow: hidden;
+        margin-right: vm(20);
+        img {
+          width: 100%;
+          height: 100%;
+        }
       }
+      .comment_rt {
+        .user_name {
+          display: flex;
+          justify-content: space-between;
+
+          .icon-vip {
+            font-size: vm(60);
+            vertical-align: middle;
+            position: absolute;
+          }
+          p {
+            font-size: vm(16);
+            color: #c1c1c1;
+          }
+        }
+        .comment {
+          padding-bottom: vm(50);
+          border-bottom: 1px solid #c1c1c1;
+          margin-top: vm(20);
+          margin-bottom: vm(30);
+        }
+      }
+    }
+    .end_open_more {
+      height: vm(80);
+      line-height: vm(80);
+      border-radius: vm(80);
+      color: #fff;
+      text-align: center;
+
+      background-color: #c1c1c1;
+      margin-bottom: vm(300);
     }
   }
 }

@@ -53,7 +53,7 @@ const routes = [
         }
     },
     {
-        path: '/song',
+        path: '/song/:id',
         name: 'Song',
         component: () => import('../views/Song.vue'),
         meta: {

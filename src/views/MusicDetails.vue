@@ -6,6 +6,12 @@
             <div class="user-wrap">
                 <div class="user-portrait">
                     <img :src="CurrentDate.coverImgUrl + '?imageView=1&type=webp&thumbnail=252x0' ">
+                    <span>
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-erji"></use>
+                        </svg>
+                        {{CurrentDate.playCount | getPlayCount}}
+                    </span>
                 </div>
 
                 <router-link class="user-music-text" tag="div" :to="`/user/${CurrentDate.userId}`">
@@ -59,6 +65,7 @@ export default {
     methods:{
         getCurrentDate() {  
             this.axios.get(`/playlist/detail?id=${this.$route.params.id}`).then(res => { 
+                console.log(res);
                 this.CurrentDate = res.playlist 
                 this.creatorData = res.playlist.creator
             }) 
@@ -86,8 +93,13 @@ export default {
     components: {
         musicListTh,
         "comment-floor" : commentFloor
+    },
+    filters: {
+        getPlayCount: function(value) {
+            if (!value) return "";
+            return Number(value/10000).toFixed(2) + '万'
+        }
     }
-    
 }
 </script>
 
@@ -122,12 +134,20 @@ export default {
             justify-content: space-between;
             // background-color: #fff;
             .user-portrait {
+                position: relative;
                 width: 126px;
                 height: 126px;
                 flex: none;
                 // background-color: purple;
                 img {
                     width: 100%;
+                }
+                span {
+                    position: absolute;
+                    right: 8px;
+                    top:5px;
+                    color: #fff;
+                    font-size: 12px;
                 }
             }
             .user-music-text {
