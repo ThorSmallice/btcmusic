@@ -3,22 +3,17 @@
         <ul class="musics-ul">
             <template v-for="item in datas">
                 <router-link tag="li" :key="item.id" :to="`/song/${item.id}`">
-                    <slot name="index"></slot>
+                    <slot name="index" :data="item.album.picUrl"></slot>
 
                     <div class="music-text-wrap">
-                        <div class="music-title"  v-html="getBlueText(item.name,inpVal)"> 
-                            <!-- <span>{{ item.song.alias[0] | getMusicTitle}}</span> -->
+                        <div class="music-title">
+                            {{item.name}}
+                            <span>{{ item.alias[0] | getMusicTitle}}</span>
                         </div> 
 
                         <div class="music-author">
                             <i class="iconfonts-sq"></i>
-                            <template v-for="chid in item.artists">
-                                <p :key="chid.id">
-                                    <span v-html="getBlueText(chid.name,inpVal)"></span>
-                                </p>
-                                
-                            </template>
-                            <p v-html="getBlueText( item.album.name,inpVal)"></p>
+                            <p>{{ item.artists[0].name + '-' + item.name }}</p>
                         </div>
                     </div>
 
@@ -34,12 +29,9 @@
 </template>
 
 <script>
-// import func from 'vue-editor-bridge';
 export default {
     props:{
-        datas: Array,
-        inpVal : String
-
+        datas: Array
     },
     data : function () {
         return {
@@ -47,22 +39,16 @@ export default {
         }
     },
     methods: {
-        getBlueText : function (value,inpVal) {
-            if (!value) return "";  
-            return value.replace(inpVal,`<span class="text-blue" style="color: #507daf;">${inpVal}</span>`) ;
-           
-        }
 
     },
     computed: {
         
     },
     filters: {
-        // getMusicTitle : function (value) {
-        //     if (!value) return "";
-        //     return `(${ value } )`
-        // },
-        
+        getMusicTitle : function (value) {
+            if (!value) return "";
+            return `(${ value } )`
+        }
     }
 }
 </script>
@@ -113,7 +99,7 @@ export default {
                         white-space: nowrap;
                         text-overflow: ellipsis;
                         word-break: normal;   
-                        font-size: 12px; 
+                        font-size: 12px;
                     }
                 }
 

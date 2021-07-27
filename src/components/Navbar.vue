@@ -1,14 +1,20 @@
 <template>
   <div id="navbar">
     <ul class="nav-bar">
-        <router-link tag="li" to="/recommend">
-            <span> 推荐音乐 </span>
+        <router-link to="/recommend" custom v-slot="{ navigate, isActive}">
+            <li :class="{ 'link-active ' : isActive}" @click="navigate">
+                <span> 推荐音乐 </span>
+            </li>
         </router-link>
-        <router-link tag="li" to="/hot">
-            <span> 热歌榜 </span>
+        <router-link to="/hot" custom v-slot="{ navigate, isActive}">
+            <li :class="{ 'link-active ' : isActive}" @click="navigate">
+                <span> 热歌榜 </span>
+            </li>
         </router-link>
-        <router-link tag="li" to="/search">
-            <span> 搜索 </span>
+        <router-link to="/search" custom v-slot="{ navigate, isActive}">
+            <li :class="{ 'link-active ' : isActive}" @click="navigate">
+                <span> 搜索 </span> 
+            </li>
         </router-link>
     </ul>
   </div>

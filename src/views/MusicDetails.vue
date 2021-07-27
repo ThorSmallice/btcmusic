@@ -65,7 +65,7 @@ export default {
     methods:{
         getCurrentDate() {  
             this.axios.get(`/playlist/detail?id=${this.$route.params.id}`).then(res => { 
-                console.log(res);
+                // console.log(res);
                 this.CurrentDate = res.playlist 
                 this.creatorData = res.playlist.creator
             }) 

@@ -7,7 +7,12 @@
             <navbar></navbar>
         </nav>
         <main>
-            <router-view></router-view>
+            <transition 
+            name="index-navbar"
+            enter-active-class="animate__animated animate__fadeIn"
+            >
+                <router-view></router-view>
+            </transition>
         </main> 
     </div>
 </template>

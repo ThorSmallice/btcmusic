@@ -84,7 +84,7 @@
 
         <!-- 搜索结果 -->
         <div class="search-result" v-show="showSearchResult">
-            <music-listfth :datas="searchResultData"> 
+            <music-listfth :datas="searchResultData" :inpVal="searchInpContent"> 
             </music-listfth>
         </div>
     </div>
@@ -128,7 +128,7 @@ export default {
                 .then(res => { 
                     this.searchAdviceData = res.result.allMatch? res.result.allMatch : []
                 }) 
-            },2500)
+            },1500)
         },
         // 搜索
         Search() {
@@ -145,12 +145,25 @@ export default {
                     this.canSearch = true
                 })
 
-                // 添加搜索历史记录
-                this.historySearchArr.push({
+                let newSearch = {
                     historyId: Date.now(),
                     text: this.searchInpContent
-                })
+                };
+                let isInHistoryArr = undefined;
 
+                // 添加搜索历史记录
+                if (!this.historySearchArr.length){
+                    this.historySearchArr.push(newSearch);
+                    newSearch = null;
+                } else {
+                    isInHistoryArr =  this.historySearchArr.findIndex(item => {
+                        return item.text == newSearch.text
+                    })
+                    isInHistoryArr == -1? this.historySearchArr.push(newSearch) : this.historySearchArr[isInHistoryArr].historyId = Date.now();                    
+                } 
+                this.historySearchArr = this.historySearchArr.sort((a, b) => {
+                    return b.historyId - a.historyId
+                })
                 setTimeout(()=> {
                     this.canSearch = true; // 两秒后允许搜索
                 },2000)
@@ -183,13 +196,14 @@ export default {
     },
     watch: {
         // 储存历史搜索记录
-        historySearchArr : function() {
+        historySearchArr : function() { 
             localStorage.setItem("historySearchArr",JSON.stringify(this.historySearchArr))
         }
     },
     components: {
         "music-listfth":musicListFth
     }
+     
 }
 </script>
 

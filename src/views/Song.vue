@@ -1,7 +1,7 @@
 <template>
   <div id="song">
     <div class="bg"></div>
-    <div class="top">
+    <!-- <div class="top">
       <div class="head_portrait">
         <img
           src="//p2.music.126.net/p4gS961wdeSUwtvNGVWl9w==/109951163282076195.jpg?imageView=1&type=webp&thumbnail=126x0"
@@ -10,7 +10,7 @@
       </div>
       你知道这首歌居然被这么评论？
       <span class="look_look">打开看看&gt;</span>
-    </div>
+    </div> -->
     <div class="player_box">
       <div class="record_player">
         <div :class="['player_center', { 'play-active': isplay }]">
@@ -44,16 +44,16 @@
         </div>
       </div>
     </div>
-    <div class="musicStreetWakeUp">
+    <!-- <div class="musicStreetWakeUp">
       <img
         src="//s3.music.126.net/mobile-new/img/musicStreet.png?22227b514ca899d2759a388ffbac109b"
         alt=""
       />
-    </div>
-    <div class="footer-wrap">
+    </div> -->
+    <!-- <div class="footer-wrap">
       <span class="open_app">打开</span>
       <span class="download_app">下载</span>
-    </div>
+    </div> -->
     <audio
       id="musicAudio"
       ref="musicAudio"
@@ -69,455 +69,144 @@
 
     <div class="control-play" @click="play"></div>
 
-    <div class="song_car" @click="carUp" :style="{ top: carTop + 'px' }">
-      <ul class="song_nav">
-        <li class="active">相关歌单</li>
-        <li>相似歌曲</li>
-        <li>精彩评论</li>
-      </ul>
-      <div class="scroll_box">
-        <div class="song_list">
-          <h3 class="scroll_box_title">包含这首歌的歌单</h3>
-          <div class="list_box">
-            <ul>
-              <li>
-                <div class="img_box">
-                  <img
-                    src="http://p2.music.126.net/c62r_l2eYC_ydpR8f2MimQ==/109951165094955243.jpg?imageView=1&type=webp&thumbnail=246x0"
-                    alt=""
-                  />
-                  <span class="play_count">
-                    <svg class="icon icon-erji" aria-hidden="true">
-                      <use xlink:href="#icon-erji"></use></svg
-                    >1261.1万</span
-                  >
-                </div>
-                <h4>『治愈基地』夜里的故事总是那么丰富</h4>
-                <p>by 勒溪</p>
-              </li>
-              <li>
-                <div class="img_box">
-                  <img
-                    src="http://p2.music.126.net/c62r_l2eYC_ydpR8f2MimQ==/109951165094955243.jpg?imageView=1&type=webp&thumbnail=246x0"
-                    alt=""
-                  />
-                  <span class="play_count"
-                    ><svg class="icon icon-erji" aria-hidden="true">
-                      <use xlink:href="#icon-erji"></use></svg
-                    >1261.1万</span
-                  >
-                </div>
-                <h4>『治愈基地』夜里的故事总是那么丰富</h4>
-                <p>by 勒溪</p>
-              </li>
-              <li>
-                <div class="img_box">
-                  <img
-                    src="http://p2.music.126.net/c62r_l2eYC_ydpR8f2MimQ==/109951165094955243.jpg?imageView=1&type=webp&thumbnail=246x0"
-                    alt=""
-                  />
-                  <span class="play_count"
-                    ><svg class="icon icon-erji" aria-hidden="true">
-                      <use xlink:href="#icon-erji"></use></svg
-                    >1261.1万</span
-                  >
-                </div>
-                <h4>『治愈基地』夜里的故事总是那么丰富</h4>
-                <p>by 勒溪</p>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="more_songs">
-          <h3 class="scroll_box_title">喜欢这首歌的人也听</h3>
-          <div class="moreSongs_list">
-            <ul>
-              <li>
-                <div class="lt">
-                  <img
-                    src="http://p1.music.126.net/KUUrg-bbybCdG_EwDSnNFA==/109951164176658680.jpg?imageView=1&type=webp&thumbnail=120x0"
-                    alt=""
-                  />
-                </div>
-                <div class="cen">
-                  <h3>有点甜</h3>
-                  <p>汪苏泷 / By2 - 万有引力</p>
-                </div>
-                <div class="rt">
-                  <svg class="icon icon-bofang" aria-hidden="true">
-                    <use xlink:href="#icon-bofang"></use>
-                  </svg>
-                </div>
-              </li>
-              <li>
-                <div class="lt">
-                  <img
-                    src="http://p1.music.126.net/KUUrg-bbybCdG_EwDSnNFA==/109951164176658680.jpg?imageView=1&type=webp&thumbnail=120x0"
-                    alt=""
-                  />
-                </div>
-                <div class="cen">
-                  <h3>有点甜</h3>
-                  <p>汪苏泷 / By2 - 万有引力</p>
-                </div>
-                <div class="rt">
-                  <svg class="icon icon-bofang" aria-hidden="true">
-                    <use xlink:href="#icon-bofang"></use>
-                  </svg>
-                </div>
-              </li>
-              <li>
-                <div class="lt">
-                  <img
-                    src="http://p1.music.126.net/KUUrg-bbybCdG_EwDSnNFA==/109951164176658680.jpg?imageView=1&type=webp&thumbnail=120x0"
-                    alt=""
-                  />
-                </div>
-                <div class="cen">
-                  <h3>有点甜</h3>
-                  <p>汪苏泷 / By2 - 万有引力</p>
-                </div>
-                <div class="rt">
-                  <svg class="icon icon-bofang" aria-hidden="true">
-                    <use xlink:href="#icon-bofang"></use>
-                  </svg>
-                </div>
-              </li>
-              <li>
-                <div class="lt">
-                  <img
-                    src="http://p1.music.126.net/KUUrg-bbybCdG_EwDSnNFA==/109951164176658680.jpg?imageView=1&type=webp&thumbnail=120x0"
-                    alt=""
-                  />
-                </div>
-                <div class="cen">
-                  <h3>有点甜</h3>
-                  <p>汪苏泷 / By2 - 万有引力</p>
-                </div>
-                <div class="rt">
-                  <svg class="icon icon-bofang" aria-hidden="true">
-                    <use xlink:href="#icon-bofang"></use>
-                  </svg>
-                </div>
-              </li>
-
-              <li>
-                <div class="lt">
-                  <img
-                    src="http://p1.music.126.net/KUUrg-bbybCdG_EwDSnNFA==/109951164176658680.jpg?imageView=1&type=webp&thumbnail=120x0"
-                    alt=""
-                  />
-                </div>
-                <div class="cen">
-                  <h3>有点甜</h3>
-                  <p>汪苏泷 / By2 - 万有引力</p>
-                </div>
-                <div class="rt">
-                  <svg class="icon icon-bofang" aria-hidden="true">
-                    <use xlink:href="#icon-bofang"></use>
-                  </svg>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="user_comment">
-          <h3 class="scroll_box_title">精彩评论</h3>
-          <div class="comment_list">
-            <div class="comment_box">
-              <div class="header_img">
-                <img
-                  src="http://p2.music.126.net/q6xXLgwHDy4Z6E8VMjjKyQ==/109951165849817945.jpg?imageView=1&type=webp&thumbnail=90x0"
-                  alt=""
-                />
-              </div>
-              <div class="comment_rt">
-                <div class="user_name">
-                  <div class="lt">
-                    <span
-                      >焕焕焕焕焕o<svg class="icon icon-vip" aria-hidden="true">
-                        <use xlink:href="#icon-vip"></use></svg
-                    ></span>
-                    <p>2021年7月19日</p>
-                  </div>
-                  <div class="rt">
-                    1609
-                    <svg class="icon icon-dianzan" aria-hidden="true">
-                      <use xlink:href="#icon-dianzan"></use>
-                    </svg>
-                  </div>
-                </div>
-                <div class="comment">
-                  有汪苏泷汪苏泷声音的剧，我都追！还有三天。
-                </div>
-              </div>
-            </div>
-            <div class="comment_box">
-              <div class="header_img">
-                <img
-                  src="http://p2.music.126.net/q6xXLgwHDy4Z6E8VMjjKyQ==/109951165849817945.jpg?imageView=1&type=webp&thumbnail=90x0"
-                  alt=""
-                />
-              </div>
-              <div class="comment_rt">
-                <div class="user_name">
-                  <div class="lt">
-                    <span
-                      >焕焕焕焕焕o<svg class="icon icon-vip" aria-hidden="true">
-                        <use xlink:href="#icon-vip"></use></svg
-                    ></span>
-                    <p>2021年7月19日</p>
-                  </div>
-                  <div class="rt">
-                    1609
-                    <svg class="icon icon-dianzan" aria-hidden="true">
-                      <use xlink:href="#icon-dianzan"></use>
-                    </svg>
-                  </div>
-                </div>
-                <div class="comment">
-                  有汪苏泷汪苏泷声音的剧，我都追！还有三天。
-                </div>
-              </div>
-            </div>
-            <div class="comment_box">
-              <div class="header_img">
-                <img
-                  src="http://p2.music.126.net/q6xXLgwHDy4Z6E8VMjjKyQ==/109951165849817945.jpg?imageView=1&type=webp&thumbnail=90x0"
-                  alt=""
-                />
-              </div>
-              <div class="comment_rt">
-                <div class="user_name">
-                  <div class="lt">
-                    <span
-                      >焕焕焕焕焕o<svg class="icon icon-vip" aria-hidden="true">
-                        <use xlink:href="#icon-vip"></use></svg
-                    ></span>
-                    <p>2021年7月19日</p>
-                  </div>
-                  <div class="rt">
-                    1609
-                    <svg class="icon icon-dianzan" aria-hidden="true">
-                      <use xlink:href="#icon-dianzan"></use>
-                    </svg>
-                  </div>
-                </div>
-                <div class="comment">
-                  有汪苏泷汪苏泷声音的剧，我都追！还有三天。
-                </div>
-              </div>
-            </div>
-            <div class="comment_box">
-              <div class="header_img">
-                <img
-                  src="http://p2.music.126.net/q6xXLgwHDy4Z6E8VMjjKyQ==/109951165849817945.jpg?imageView=1&type=webp&thumbnail=90x0"
-                  alt=""
-                />
-              </div>
-              <div class="comment_rt">
-                <div class="user_name">
-                  <div class="lt">
-                    <span
-                      >焕焕焕焕焕o<svg class="icon icon-vip" aria-hidden="true">
-                        <use xlink:href="#icon-vip"></use></svg
-                    ></span>
-                    <p>2021年7月19日</p>
-                  </div>
-                  <div class="rt">
-                    1609
-                    <svg class="icon icon-dianzan" aria-hidden="true">
-                      <use xlink:href="#icon-dianzan"></use>
-                    </svg>
-                  </div>
-                </div>
-                <div class="comment">
-                  有汪苏泷汪苏泷声音的剧，我都追！还有三天。
-                </div>
-              </div>
-            </div>
-            <div class="comment_box">
-              <div class="header_img">
-                <img
-                  src="http://p2.music.126.net/q6xXLgwHDy4Z6E8VMjjKyQ==/109951165849817945.jpg?imageView=1&type=webp&thumbnail=90x0"
-                  alt=""
-                />
-              </div>
-              <div class="comment_rt">
-                <div class="user_name">
-                  <div class="lt">
-                    <span
-                      >焕焕焕焕焕o<svg class="icon icon-vip" aria-hidden="true">
-                        <use xlink:href="#icon-vip"></use></svg
-                    ></span>
-                    <p>2021年7月19日</p>
-                  </div>
-                  <div class="rt">
-                    1609
-                    <svg class="icon icon-dianzan" aria-hidden="true">
-                      <use xlink:href="#icon-dianzan"></use>
-                    </svg>
-                  </div>
-                </div>
-                <div class="comment">
-                  有汪苏泷汪苏泷声音的剧，我都追！还有三天。
-                </div>
-              </div>
-            </div>
-            <div class="comment_box">
-              <div class="header_img">
-                <img
-                  src="http://p2.music.126.net/q6xXLgwHDy4Z6E8VMjjKyQ==/109951165849817945.jpg?imageView=1&type=webp&thumbnail=90x0"
-                  alt=""
-                />
-              </div>
-              <div class="comment_rt">
-                <div class="user_name">
-                  <div class="lt">
-                    <span
-                      >焕焕焕焕焕o<svg class="icon icon-vip" aria-hidden="true">
-                        <use xlink:href="#icon-vip"></use></svg
-                    ></span>
-                    <p>2021年7月19日</p>
-                  </div>
-                  <div class="rt">
-                    1609
-                    <svg class="icon icon-dianzan" aria-hidden="true">
-                      <use xlink:href="#icon-dianzan"></use>
-                    </svg>
-                  </div>
-                </div>
-                <div class="comment">
-                  有汪苏泷汪苏泷声音的剧，我都追！还有三天。
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="end_open_more">打开云音乐查看更多精彩评论</div>
-        </div>
-      </div>
-    </div>
+    <music-card
+    :relatedMusicList= "relatedMusicList"
+    :similarMusic= "similarMusic"
+    :goodComments= "goodComments"
+    >
+    </music-card>
   </div>
 </template>
 
 <script>
+import musicCard from './../components/MusicCard.vue'
 export default {
-  data: () => {
-    return {
-      carTop: 80,
-      isUp: true,
-      currentTime: 0, // 当前播放的时间
-      currentLine: 0, // 当前播放的歌词的行数
-      currentItemHeight: 60, // 当前歌词处在的高度
-      isplay: false, // 播放状态
-      musicUrlArr: [], // 音乐url列表
-      musicLrc: "", // 歌词lrc内容
-      musicPicurl: "", // 歌曲图片url
-      author: "", // 作者
-      musicDetails: {}, // 歌曲详情
-      musicObj: {
-        lrcTime: [], // 歌词对应的时间列表
-        lrttext: [], // 歌词列表
-      },
-    };
-  },
-  methods: {
-    // 播放音乐
-    play() {
-      this.isplay = !this.isplay; // 播放按钮显示状态更改
-      this.isplay
-        ? this.$refs.musicAudio.play()
-        : this.$refs.musicAudio.pause();
+    data: () => {
+        return {
+            carTop: 80,
+            isUp: true,
+            currentTime: 0, // 当前播放的时间
+            currentLine: 0, // 当前播放的歌词的行数
+            currentItemHeight: 60, // 当前歌词处在的高度
+            isplay: false, // 播放状态
+            musicUrlArr: [], // 音乐url列表
+            musicLrc: "", // 歌词lrc内容
+            musicPicurl: "", // 歌曲图片url
+            author: "", // 作者
+            musicDetails: {}, // 歌曲详情
+            musicObj: {
+                lrcTime: [], // 歌词对应的时间列表
+                lrttext: [], // 歌词列表
+            },
+            relatedMusicList: [],   // 相关歌单
+            similarMusic:[],        // 相似歌曲
+            goodComments: []        // 精彩评论 
+        };
     },
-    // 音乐播放触发的事件 歌词滚动
-    runlrc() {
-      this.currentTime = this.$refs.musicAudio.currentTime; //  音乐一触发，把播放进度的时间同步给当前播放时间
-      if (
-        this.currentTime < this.musicObj.lrcTime[this.currentLine + 1] &&
-        this.currentTime > this.musicObj.lrcTime[this.currentLine]
-      ) {
-        // 当前播放时间与歌词列表的时间对比  相等的话 跳转到对应的歌词行数
+    methods: {
+        // 播放音乐
+        play() {
+            this.isplay = !this.isplay; // 播放按钮显示状态更改
+            this.isplay
+                ? this.$refs.musicAudio.play()
+                : this.$refs.musicAudio.pause();
+        },
+        // 音乐播放触发的事件 歌词滚动
+        runlrc() {
+            this.currentTime = this.$refs.musicAudio.currentTime; //  音乐一触发，把播放进度的时间同步给当前播放时间
+            if (
+                this.currentTime < this.musicObj.lrcTime[this.currentLine + 1] &&
+                this.currentTime > this.musicObj.lrcTime[this.currentLine]
+            ) {
+                // 当前播放时间与歌词列表的时间对比  相等的话 跳转到对应的歌词行数
 
-        this.currentItemHeight -=
-          this.$refs.songScollUl.children[this.currentLine].clientHeight;
-        this.$refs.songScollUl.style.transform = `translateY(${this.currentItemHeight}px)`;
-        this.$refs.songScollUl.children[this.currentLine].style.color =
-          "rgb(255, 255, 255)";
-        if (this.currentLine >= 1) {
-          this.$refs.songScollUl.children[this.currentLine - 1].style.color =
-            "";
+                this.currentItemHeight -=
+                this.$refs.songScollUl.children[this.currentLine].clientHeight;
+                this.$refs.songScollUl.style.transform = `translateY(${this.currentItemHeight}px)`;
+                this.$refs.songScollUl.children[this.currentLine].style.color =
+                "rgb(255, 255, 255)";
+                if (this.currentLine >= 1) {
+                this.$refs.songScollUl.children[this.currentLine - 1].style.color =
+                    "";
+                }
+
+                this.currentLine++;
+            }
+        }, 
+        // 获取数据
+        getMusicData() {
+            // 获取歌曲url
+            this.axios.get(`/song/url?id=${this.$route.params.id}`).then((res) => {
+                this.musicUrlArr = res.data;
+                this.isplay = true;
+            });
+            // 获取歌曲详情
+            this.axios
+                .get(`/song/detail?ids=${this.$route.params.id}`)
+                .then((res) => {
+                this.musicDetails = res.songs[0];
+                this.musicPicurl = res.songs[0].al.picUrl;
+                this.author = res.songs[0].ar[0].name;
+            });
+            // 获取歌词
+            this.axios.get(`/lyric?id=${this.$route.params.id}`).then((res) => {
+                this.musicLrc = res.lrc.lyric;
+                // console.log(this.musicLrc);
+                let lrcarr = this.musicLrc.split("\n");
+                lrcarr.forEach((item, index) => {
+                    this.musicObj.lrcTime[index] = (
+                        parseFloat(item.slice(item.indexOf("[") + 1, item.indexOf(":"))) *
+                        60 +
+                        parseFloat(item.slice(item.indexOf(":") + 1, item.indexOf("]")))
+                    ).toFixed(2);
+                    this.musicObj.lrttext[index] = item
+                    .slice(item.indexOf("]") + 1, item.length)
+                    .trim();
+                });
+
+                this.musicObj.lrcTime.splice(this.musicObj.lrcTime.length - 1, 1); // 删除最后一个空的
+                this.musicObj.lrttext.splice(this.musicObj.lrttext.length - 1, 1); // 删除最后一个空的
+            });
+            // 获取相关歌单推荐
+            this.axios.get(`/related/playlist?id=${this.$route.params.id}`).then(res => { 
+                // console.log(res);
+                this.relatedMusicList = res.playlists
+            });
+            // 获取相似歌曲列表
+            this.axios.get(`/simi/song?id=${this.$route.params.id}`).then(res => { 
+                // console.log(res.songs);
+                this.similarMusic = res.songs;
+            });
+            // 获取精彩评论
+            this.axios.get(`/comment/music?id=${this.$route.params.id}&limit=5`).then(res => {
+                this.goodComments = res.comments;
+            })
+        },
+        // 开始播放时添加动画
+        addTransition() {
+            this.$refs.songScollUl.style.transition = "transform .8s ease-out";
+        },
+        // 结束播放时
+        initPlayStatus() {
+            // if (this.currentLine < this.musicObj.lrttext.length) {
+            //     this.currentLine = this.musicObj.lrttext.length;
+            //     this.currentItemHeight -= this.$refs.songScollUl.children[this.currentLine].clientHeight;
+            //     this.$refs.songScollUl.style.transform = `translateY(${this.currentItemHeight}px)`
+            // }
+            this.currentTime = 0; // 重置当前播放时间
+            this.currentLine = 0; // 重置当前播放行数
+            this.currentItemHeight = 60; // 重置当前歌词滚动高度
+            this.$refs.songScollUl.style.transition = "none";
+            this.$refs.songScollUl.style.transform = `translateY(30px)`;
+            this.isplay = false; // 播放状态停止
         }
-
-        this.currentLine++;
-      }
     },
-    carUp() {
-      this.isUp = !this.isUp;
-      if (this.isUp) {
-        // this.isUp = false;
-        this.carTop = -488;
-      } else {
-        // this.isUp = true;
-        this.carTop = 80;
-      }
+    created() {
+        this.getMusicData();
     },
-    // 获取数据
-    getMusicData() {
-      // 获取歌曲url
-      this.axios.get(`/song/url?id=${this.$route.params.id}`).then((res) => {
-        this.musicUrlArr = res.data;
-        this.isplay = true;
-      });
-      // 获取歌曲详情
-      this.axios
-        .get(`/song/detail?ids=${this.$route.params.id}`)
-        .then((res) => {
-          this.musicDetails = res.songs[0];
-          this.musicPicurl = res.songs[0].al.picUrl;
-          this.author = res.songs[0].ar[0].name;
-        });
-      // 获取歌词
-      this.axios.get(`/lyric?id=${this.$route.params.id}`).then((res) => {
-        this.musicLrc = res.lrc.lyric;
-        // console.log(this.musicLrc);
-        let lrcarr = this.musicLrc.split("\n");
-        lrcarr.forEach((item, index) => {
-          this.musicObj.lrcTime[index] = (
-            parseFloat(item.slice(item.indexOf("[") + 1, item.indexOf(":"))) *
-              60 +
-            parseFloat(item.slice(item.indexOf(":") + 1, item.indexOf("]")))
-          ).toFixed(2);
-          this.musicObj.lrttext[index] = item
-            .slice(item.indexOf("]") + 1, item.length)
-            .trim();
-        });
-
-        this.musicObj.lrcTime.splice(this.musicObj.lrcTime.length - 1, 1); // 删除最后一个空的
-        this.musicObj.lrttext.splice(this.musicObj.lrttext.length - 1, 1); // 删除最后一个空的
-      });
-    },
-    // 开始播放时添加动画
-    addTransition() {
-      this.$refs.songScollUl.style.transition = "transform .8s ease-out";
-    },
-    // 结束播放时
-    initPlayStatus() {
-      // if (this.currentLine < this.musicObj.lrttext.length) {
-      //     this.currentLine = this.musicObj.lrttext.length;
-      //     this.currentItemHeight -= this.$refs.songScollUl.children[this.currentLine].clientHeight;
-      //     this.$refs.songScollUl.style.transform = `translateY(${this.currentItemHeight}px)`
-      // }
-      this.currentTime = 0; // 重置当前播放时间
-      this.currentLine = 0; // 重置当前播放行数
-      this.currentItemHeight = 60; // 重置当前歌词滚动高度
-      this.$refs.songScollUl.style.transition = "none";
-      this.$refs.songScollUl.style.transform = `translateY(30px)`;
-      this.isplay = false; // 播放状态停止
-    },
-  },
-  created() {
-    this.getMusicData();
-  },
+    components: {
+        "music-card": musicCard
+    }
 };
 </script>
 
@@ -531,8 +220,12 @@ export default {
   }
 }
 #song {
-  overflow: hidden;
-  height: 100vh;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    height: 100vh;
   .bg {
     background-image: url("http://p2.music.126.net/-SebB9G58GprMCOSN4rMCQ==/109951166177053222.jpg?imageView&thumbnail=50y50&quality=15&tostatic=0");
     opacity: 1;
@@ -758,172 +451,5 @@ export default {
     background-color: transparent;
   }
 }
-.song_car {
-  position: relative;
-  // top: vm(-970);
-  height: 788px;
-  overflow: auto;
-  background-color: rgba(255, 255, 255);
-  border-radius: 30px 30px 0 0;
-  padding: vm(65) vm(30);
-  .song_nav {
-    // position: absolute;
-    // top: 0;
-    // left: 0;
-    display: flex;
-    justify-content: space-around;
-    font-size: vm(32);
 
-    li {
-      height: vm(60);
-      text-align: center;
-      width: 5em;
-    }
-    .active {
-      color: red;
-      border-bottom: 2px solid red;
-    }
-    &::before {
-      position: absolute;
-      left: 50%;
-      top: 8px;
-      transform: translateX(-50%);
-      content: "";
-      display: block;
-      width: 54px;
-      height: 5px;
-      border-radius: 5px;
-      background: rgba(51, 51, 51, 0.1);
-    }
-  }
-  .song_list {
-    margin-top: vm(5);
-    ul {
-      display: flex;
-      justify-content: space-between;
-      margin-top: vm(20);
-      li {
-        width: vm(218);
-        .img_box {
-          position: relative;
-          .icon-erji {
-            font-size: vm(30);
-          }
-          img {
-            width: 100%;
-          }
-          .play_count {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            color: #fff;
-            font-size: vm(16);
-          }
-        }
-        h4 {
-          font-size: vm(16);
-          font-weight: 400;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
-        }
-        p {
-          color: gray;
-          font-size: vm(16);
-        }
-      }
-    }
-  }
-  .more_songs {
-    margin-top: vm(50);
-    .scroll_box_title {
-      margin-bottom: vm(30);
-    }
-    .moreSongs_list {
-      ul {
-        li {
-          display: flex;
-          .lt {
-            width: vm(80);
-            // float: left;
-            margin-right: vm(20);
-            img {
-              width: 100%;
-            }
-          }
-        }
-        .cen {
-          // float: left;
-          H3 {
-            font-weight: 400;
-            font-size: vm(30);
-          }
-          p {
-            color: #c1c1c1;
-            font-size: vm(26);
-            margin-top: vm(3);
-          }
-        }
-        .rt {
-          // float: left;
-          font-size: vm(55);
-          position: absolute;
-          right: vm(30);
-        }
-      }
-    }
-  }
-  .user_comment {
-    .scroll_box_title {
-      margin-top: vm(30);
-      margin-bottom: vm(30);
-    }
-    .comment_box {
-      display: flex;
-      .header_img {
-        width: vm(80);
-        height: vm(80);
-        border-radius: 50%;
-        overflow: hidden;
-        margin-right: vm(20);
-        img {
-          width: 100%;
-          height: 100%;
-        }
-      }
-      .comment_rt {
-        .user_name {
-          display: flex;
-          justify-content: space-between;
-
-          .icon-vip {
-            font-size: vm(60);
-            vertical-align: middle;
-            position: absolute;
-          }
-          p {
-            font-size: vm(16);
-            color: #c1c1c1;
-          }
-        }
-        .comment {
-          padding-bottom: vm(50);
-          border-bottom: 1px solid #c1c1c1;
-          margin-top: vm(20);
-          margin-bottom: vm(30);
-        }
-      }
-    }
-    .end_open_more {
-      height: vm(80);
-      line-height: vm(80);
-      border-radius: vm(80);
-      color: #fff;
-      text-align: center;
-
-      background-color: #c1c1c1;
-      margin-bottom: vm(300);
-    }
-  }
-}
 </style>

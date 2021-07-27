@@ -1,0 +1,11 @@
+#loading-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    position: absolute;
+    top: 0;
+    background: transparent;
+    height: 100%;
+    width: 100%;
+} 

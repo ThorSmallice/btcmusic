@@ -1,4 +1,5 @@
 @charset "utf-8";
+@use "sass:math";
 // @function
 // wm($widthH) 返回元素宽度或者高度 参数$widthH ： width/height设计稿尺寸
 
@@ -52,7 +53,8 @@ aFont($linHei,$afontSize,$fontCol,$bgcCol)
 
 */
 @function vm($widthH) {
-    @return ($widthH / 750) * 100 + vw;
+    // @return ($widthH / 750) * 100 + vw;
+    @return math.div($widthH ,750)  * 100 + vw;
 }
 
 @mixin wh ($width,$height) {
