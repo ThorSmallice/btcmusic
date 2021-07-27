@@ -2,7 +2,7 @@
     <div id="music-card" :class="{'touch-active' : touchMoveActive}" ref="musicCard"> 
         <div class="song_car">
             <!-- v-touch:swipe.bottom="touchBottom" v-touch:swipe.top="touchTop"  -->
-            <ul class="song_nav"  v-touch:moving="touchMoving" @touchend="touchEnd" @touchstart="touchStart"> 
+            <ul class="song_nav"  v-touch:moving="touchMoving" @touchend="touchEnd" v-touch:start="touchStart"> 
                 <li :class="{'active' : boxIsActive == 0 }" v-if="relatedMusicList.length" @click="changeTop(0)">
                     <span>相关歌单</span>
                 </li>
@@ -102,21 +102,24 @@ export default {
         // 卡片拖动开始
         touchStart(e) { 
             this.touchStartY = e.changedTouches[0].clientY;
+            // console.log(this.touchStartY);
         },
         // 卡片拖动结束
         touchEnd (e) { 
             this.touchEndY = e.changedTouches[0].clientY;
-            if (this.touchEndY - this.touchStartY < -50) { // 向上滑动
+            if (this.touchEndY < this.touchStartY && Math.abs(this.touchEndY - this.touchStartY) >= 80) { // 向上滑动
+                // console.log(this.touchEndY - this.touchStartY);
                 this.$refs.musicCard.style.top = `8vh`;
                 this.touchMoveActive = true;
-            }else {
+            }else if (this.touchEndY < this.touchStartY && Math.abs(this.touchEndY - this.touchStartY) < 80){
+                console.log(this.touchEndY - this.touchStartY);
                 this.$refs.musicCard.style.top = `92.5vh`;
                 this.touchMoveActive = false; 
             }
-            if (this.touchEndY - this.touchStartY > 50) {
+            if (this.touchEndY > this.touchStartY && Math.abs(this.touchEndY - this.touchStartY) >= 80 && this.$refs.musicCard.style.top < `50vh`) {
                 this.$refs.musicCard.style.top = `92.5vh`
                 this.touchMoveActive = false; 
-            }else {
+            }else if (this.touchEndY > this.touchStartY && Math.abs(this.touchEndY - this.touchStartY) < 80){
                 this.$refs.musicCard.style.top = `8vh`
                 this.touchMoveActive = true;
             }
@@ -150,8 +153,25 @@ export default {
             if (this.$refs.scrollBox.scrollTop > this.$refs.moreSongs.offsetTop) {
                 this.$emit("changeTop",2);
             }   
+        },
+        // 卡片归位
+        closeCard() {
+            this.$refs.musicCard.style.top = `92.5vh`;
+            this.touchMoveActive = false; 
+            this.$refs.scrollBox.scrollTop = 0;
+            if (!this.relatedMusicList.length) {
+                this.changeTop(0)
+            } else {
+                this.changeTop(1)
+            }
+        }
+    },
+    watch: {
+        $route() {
+            this.closeCard()
         }
     }
+    
 }
 </script>
 

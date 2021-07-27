@@ -38,9 +38,6 @@ export default {
             
         }
     },
-    methods: {
-
-    },
     computed: {
         
     },
