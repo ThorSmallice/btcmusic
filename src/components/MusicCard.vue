@@ -3,18 +3,20 @@
         <div class="song_car">
             <!-- v-touch:swipe.bottom="touchBottom" v-touch:swipe.top="touchTop"  -->
             <ul class="song_nav"  v-touch:moving="touchMoving" @touchend="touchEnd" @touchstart="touchStart"> 
-                <li class="active" v-if="relatedMusicList.length">
+                <li :class="{'active' : boxIsActive == 0 }" v-if="relatedMusicList.length" @click="changeTop(0)">
                     <span>相关歌单</span>
                 </li>
-                <li class="active">
+                <li :class="{'active' : boxIsActive == 1}" @click="changeTop(1)">
                     <span>相似歌曲</span>
                 </li>
-                <li>
+                <li :class="{'active' : boxIsActive == 2 }" @click="changeTop(2)">
                     <span>精彩评论</span>
                 </li>
             </ul>
-            <div class="scroll_box">
-                <div class="song_list" v-if="relatedMusicList.length">
+
+            <div class="scroll_box" ref="scrollBox" @scroll.self="scrollBox">
+                
+                <div class="song_list" v-if="relatedMusicList.length" ref="songList">
                     <h3 class="scroll_box_title">包含这首歌的歌单</h3>
                     <div class="recommend-wrap">
                         <ul class="recommend-ul">
@@ -34,7 +36,7 @@
                     </div>
                 </div>
 
-                <div class="more_songs">
+                <div class="more_songs" ref="moreSongs">
                     <h3 class="scroll_box_title">喜欢这首歌的人也听</h3>
                     <music-list :datas="similarMusic">
                         <template v-slot:index="dataObj">
@@ -45,7 +47,7 @@
                     </music-list>
                 </div>
 
-                <div class="user_comment">
+                <div class="user_comment" ref="userComment">
                     <h3 class="scroll_box_title">精彩评论</h3>
                     <comm-floor
                     :datas="goodComments"
@@ -66,7 +68,7 @@ import CommFloor from './CommFloor.vue';
 import MusicList from './MusicListFir.vue';
 export default {
     data: function () {
-        return {
+        return { 
             touchMoveActive: false,
             cantouch:true,
             touchStartY: "",    // 触击屏幕时的触击点的Y值
@@ -76,32 +78,16 @@ export default {
     props: {
         "relatedMusicList" : Array,
         "similarMusic": Array,
-        "goodComments": Array
+        "goodComments": Array,
+        "boxIsActive": [Number,String]
     },
     components: {
         "comm-floor": CommFloor,
         "music-list": MusicList
     },
-    methods: {
-        // 卡片向下滑动
-        // touchBottom() {  
-        //     if (this.cantouch) { 
-        //         this.cantouch = false;
-        //         this.touchMoveActive = false;
-        //     }
-        //     this.cantouch = true  
-        // },
-        // // 卡片向上滑动
-        // touchTop () {
-        //     if (this.cantouch){
-        //         this.cantouch = false;
-        //         this.touchMoveActive = true 
-        //     }
-        //     this.cantouch = true  
-        // },
+    methods: { 
         // 卡片拖动
-        touchMoving(e) { 
-           
+        touchMoving(e) {  
             if(e.changedTouches[0].clientY > parseInt(e.changedTouches[0].screenY * 0.26) && e.changedTouches[0].clientY < parseInt(e.changedTouches[0].screenY * 0.811)) {
                 
                 this.touchMoveActive = true;
@@ -111,9 +97,7 @@ export default {
                 if (e.changedTouches[0].clientY >= parseInt(e.changedTouches[0].screenY * 0.8)) {
                     this.touchMoveActive = false; 
                 }
-            } 
-             
-             
+            }  
         },
         // 卡片拖动开始
         touchStart(e) { 
@@ -126,17 +110,46 @@ export default {
                 this.$refs.musicCard.style.top = `8vh`;
                 this.touchMoveActive = true;
             }else {
-                this.$refs.musicCard.style.top = `92.2vh`;
+                this.$refs.musicCard.style.top = `92.5vh`;
                 this.touchMoveActive = false; 
             }
             if (this.touchEndY - this.touchStartY > 50) {
-                this.$refs.musicCard.style.top = `92.2vh`
+                this.$refs.musicCard.style.top = `92.5vh`
                 this.touchMoveActive = false; 
             }else {
                 this.$refs.musicCard.style.top = `8vh`
                 this.touchMoveActive = true;
             }
             this.$refs.musicCard.style.transition = "all .6s ease-out";
+        },
+        // 卡片按钮点击
+        changeTop(val) {
+             
+            this.$emit("changeTop",val);
+            switch (val) {
+                case 0 : 
+                    this.$refs.scrollBox.scrollTop = 0;
+                    break;
+                case 1 :
+                    this.$refs.scrollBox.scrollTop = this.$refs.moreSongs.offsetTop - 70;
+                    break;
+                case 2 : 
+                    this.$refs.scrollBox.scrollTop = this.$refs.userComment.offsetTop - 70;
+                    break;
+            }
+
+        },
+        // 滚动卡片
+        scrollBox() { 
+            if (this.$refs.songList && this.$refs.scrollBox.scrollTop < this.$refs.songList.offsetTop) {
+                this.$emit("changeTop",0);
+            }
+            if (this.$refs.scrollBox.scrollTop <= this.$refs.moreSongs.offsetTop) {
+                this.$emit("changeTop",1);
+            } 
+            if (this.$refs.scrollBox.scrollTop > this.$refs.moreSongs.offsetTop) {
+                this.$emit("changeTop",2);
+            }   
         }
     }
 }
@@ -177,6 +190,7 @@ export default {
         position: relative;
         padding-top: 30px;
         display: flex;
+        margin-bottom: 5px;
         justify-content: space-around;
         li {
             flex: 1;

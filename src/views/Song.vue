@@ -73,6 +73,8 @@
     :relatedMusicList= "relatedMusicList"
     :similarMusic= "similarMusic"
     :goodComments= "goodComments"
+    :boxIsActive = "boxIsActive"
+    @changeTop="changeTop"
     >
     </music-card>
   </div>
@@ -83,6 +85,7 @@ import musicCard from './../components/MusicCard.vue'
 export default {
     data: () => {
         return {
+            boxIsActive: 0,
             carTop: 80,
             isUp: true,
             currentTime: 0, // 当前播放的时间
@@ -169,8 +172,11 @@ export default {
             });
             // 获取相关歌单推荐
             this.axios.get(`/related/playlist?id=${this.$route.params.id}`).then(res => { 
-                console.log(res);
+                // console.log(res);
                 this.relatedMusicList = res.playlists
+                if ( !res.playlists.length ) {
+                    this.boxIsActive = 1
+                }
             });
             // 获取相似歌曲列表
             this.axios.get(`/simi/song?id=${this.$route.params.id}`).then(res => { 
@@ -199,6 +205,11 @@ export default {
             this.$refs.songScollUl.style.transition = "none";
             this.$refs.songScollUl.style.transform = `translateY(30px)`;
             this.isplay = false; // 播放状态停止
+        },
+        // 卡片按钮点击
+        changeTop(val) {
+            // console.log(val);
+            this.boxIsActive = val
         }
     },
     created() {
