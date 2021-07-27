@@ -113,7 +113,7 @@ export default {
         },
         // 音乐播放触发的事件 歌词滚动
         runlrc() {
-            this.currentTime = this.$refs.musicAudio.currentTime; //  音乐一触发，把播放进度的时间同步给当前播放时间
+            this.currentTime = this.$refs.musicAudio.currentTime || ""; //  音乐一触发，把播放进度的时间同步给当前播放时间
             if (
                 this.currentTime < this.musicObj.lrcTime[this.currentLine + 1] &&
                 this.currentTime > this.musicObj.lrcTime[this.currentLine]
@@ -169,7 +169,7 @@ export default {
             });
             // 获取相关歌单推荐
             this.axios.get(`/related/playlist?id=${this.$route.params.id}`).then(res => { 
-                // console.log(res);
+                console.log(res);
                 this.relatedMusicList = res.playlists
             });
             // 获取相似歌曲列表
