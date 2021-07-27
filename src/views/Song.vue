@@ -74,7 +74,7 @@
     :similarMusic= "similarMusic"
     :goodComments= "goodComments"
     :boxIsActive = "boxIsActive"
-    @changeTop="changeTop"
+    @changeTop="changeTop" 
     >
     </music-card>
   </div>
@@ -137,22 +137,22 @@ export default {
             }
         }, 
         // 获取数据
-        getMusicData() {
+        getMusicData(id) {
             // 获取歌曲url
-            this.axios.get(`/song/url?id=${this.$route.params.id}`).then((res) => {
+            this.axios.get(`/song/url?id=${id}`).then((res) => {
                 this.musicUrlArr = res.data;
                 this.isplay = true;
             });
             // 获取歌曲详情
             this.axios
-                .get(`/song/detail?ids=${this.$route.params.id}`)
+                .get(`/song/detail?ids=${id}`)
                 .then((res) => {
                 this.musicDetails = res.songs[0];
                 this.musicPicurl = res.songs[0].al.picUrl;
                 this.author = res.songs[0].ar[0].name;
             });
             // 获取歌词
-            this.axios.get(`/lyric?id=${this.$route.params.id}`).then((res) => {
+            this.axios.get(`/lyric?id=${id}`).then((res) => {
                 this.musicLrc = res.lrc.lyric;
                 // console.log(this.musicLrc);
                 let lrcarr = this.musicLrc.split("\n");
@@ -171,7 +171,7 @@ export default {
                 this.musicObj.lrttext.splice(this.musicObj.lrttext.length - 1, 1); // 删除最后一个空的
             });
             // 获取相关歌单推荐
-            this.axios.get(`/related/playlist?id=${this.$route.params.id}`).then(res => { 
+            this.axios.get(`/related/playlist?id=${id}`).then(res => { 
                 // console.log(res);
                 this.relatedMusicList = res.playlists
                 if ( !res.playlists.length ) {
@@ -179,12 +179,12 @@ export default {
                 }
             });
             // 获取相似歌曲列表
-            this.axios.get(`/simi/song?id=${this.$route.params.id}`).then(res => { 
+            this.axios.get(`/simi/song?id=${id}`).then(res => { 
                 // console.log(res.songs);
                 this.similarMusic = res.songs;
             });
             // 获取精彩评论
-            this.axios.get(`/comment/music?id=${this.$route.params.id}&limit=5`).then(res => {
+            this.axios.get(`/comment/music?id=${id}&limit=5`).then(res => {
                 this.goodComments = res.comments;
             })
         },
@@ -213,11 +213,20 @@ export default {
         }
     },
     created() {
-        this.getMusicData();
+        this.getMusicData(this.$route.params.id);
     },
     components: {
         "music-card": musicCard
+    },
+    beforeRouteUpdate (to,from,next){  
+        this.getMusicData(to.params.id);
+        next();
     }
+    // watch: {
+    //     $route(to) {
+    //         this.$router.push(to.fullPath)
+    //     }
+    // }
 };
 </script>
 

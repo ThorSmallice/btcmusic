@@ -102,7 +102,7 @@ export default {
         // 卡片拖动开始
         touchStart(e) { 
             this.touchStartY = e.changedTouches[0].clientY;
-            console.log(this.touchStartY);
+            // console.log(this.touchStartY);
         },
         // 卡片拖动结束
         touchEnd (e) { 
@@ -153,8 +153,25 @@ export default {
             if (this.$refs.scrollBox.scrollTop > this.$refs.moreSongs.offsetTop) {
                 this.$emit("changeTop",2);
             }   
+        },
+        // 卡片归位
+        closeCard() {
+            this.$refs.musicCard.style.top = `92.5vh`;
+            this.touchMoveActive = false; 
+            this.$refs.scrollBox.scrollTop = 0;
+            if (!this.relatedMusicList.length) {
+                this.changeTop(0)
+            } else {
+                this.changeTop(1)
+            }
+        }
+    },
+    watch: {
+        $route() {
+            this.closeCard()
         }
     }
+    
 }
 </script>
 
