@@ -32,7 +32,9 @@ export default {
 <style lang="scss" scoped>
 #Index { 
     width: 100%;
-    padding-top: 144px;
+    // padding-top: 144px;
+    // overflow: hidden;
+    height: 100%;
     header{
         width: 100%;
         position: fixed; 

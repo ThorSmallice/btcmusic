@@ -1,8 +1,8 @@
 <template>
     <div id="musicList">
         <ul class="musics-ul">
-            <template v-for="item in datas">
-                <router-link tag="li" :key="item.id" :to="`/song/${item.id}`">
+            <template v-for="(item,index) in datas">
+                <router-link tag="li" :key="index" :to="`/song/${item.id}`">
                     <slot name="index"></slot>
 
                     <div class="music-text-wrap">
@@ -12,8 +12,8 @@
 
                         <div class="music-author">
                             <i class="iconfonts-sq"></i>
-                            <template v-for="chid in item.artists">
-                                <p :key="chid.id">
+                            <template v-for="(chid,index) in item.artists">
+                                <p :key="index">
                                     <span v-html="getBlueText(chid.name,inpVal)"></span>
                                 </p>
                                 

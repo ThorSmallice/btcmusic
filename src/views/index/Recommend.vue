@@ -91,6 +91,7 @@ export default {
 
 <style lang="scss" scoped>
 #recommend {
+    padding-top: 144px;
     h2 {
         padding-left: 9px;
         font-size: 17px;

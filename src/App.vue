@@ -11,6 +11,10 @@
 
 <style lang="scss">
 @import './assets/scss/base.scss';
+#app {
+    // overflow: scroll;
+    height: 100%;
+}
 .icon {
   width: 1em;
   height: 1em;

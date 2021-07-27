@@ -1,5 +1,5 @@
 <template>
-    <div id="search">
+    <div id="search" >
         <header>
             <div class="search-inp-wrap">
                 <span class="icon-box iconfonts-search">
@@ -83,18 +83,19 @@
         </div>
 
         <!-- 搜索结果 -->
-        <div class="search-result" v-show="showSearchResult">
+        <div class="search-result" v-show="showSearchResult" @scroll.passive.self="scollGet">
             <music-listfth :datas="searchResultData" :inpVal="searchInpContent"> 
             </music-listfth>
         </div>
     </div>
 </template>
 
-<script>
+<script> 
 import musicListFth from './../../components/MusicListFth.vue';
 export default {
     data: function() {
         return {
+            searchOffset: 0,    // 搜索结果 第几页
             showcloseBtn: false, // 控制显示输入框关闭按钮
             advicetimer:null, // 搜索建议请求数据的计时器
             showSearchAdvice: false,  // 控制显示搜索框
@@ -122,25 +123,27 @@ export default {
         SearchAdvice() { 
             this.showSearchAdvice = this.searchInpContent.length ? true : false; // 有内容 就显示搜索框
             this.showcloseBtn = this.searchInpContent.length ? true : false;  // 并且显示清空输入按钮
+            this.showSearchResult = false;          // 隐藏搜索结果列表
             clearTimeout(this.advicetimer);    // 清除上一次请求 
             this.advicetimer = setTimeout(() => {
                 this.axios.get(`/search/suggest?keywords=${this.searchInpContent}&type=mobile`)
                 .then(res => { 
                     this.searchAdviceData = res.result.allMatch? res.result.allMatch : []
                 }) 
-            },1500)
+            },500)
         },
         // 搜索
         Search() {
             if (this.canSearch) {
                 this.searchResultData = [];  // 搜索结果列表清空
+                this.searchOffset = 0;
                 this.canSearch = false;  // 禁止搜索
                 this.showSearchResult = true; // 显示搜索结果框
                 this.showSearchAdvice = false; // 隐藏搜索建议框
                 this.showcloseBtn = true;   // 显示清空搜索内容按钮
                 this.$refs.searchInp.blur();  // 搜索框失去焦点 
                 // 发送搜索请求
-                this.axios.get(`/search?keywords=${this.searchInpContent}&limit=30`).then(res => {
+                this.axios.get(`/search?keywords=${this.searchInpContent}&limit=30&offset=${this.searchOffset}&type=1`).then(res => {
                     this.searchResultData = res.result.songs
                     this.canSearch = true
                 })
@@ -187,6 +190,23 @@ export default {
             this.historySearchArr = this.historySearchArr.filter(item => {
                 return item.historyId != id
             })
+        },
+        // 页面滚动事件
+        scollGet(e) { 
+            
+            if (e.target.scrollTop + e.target.clientHeight >= e.target.scrollHeight - 80) {
+                if (this.canSearch) {
+                    this.canSearch = false
+                    ++this.searchOffset;
+                    this.axios.get(`/search?keywords=${this.searchInpContent}&limit=30&offset=${this.searchOffset}&type=1`).then(res => {
+                        this.searchResultData = [...this.searchResultData, ...res.result.songs]
+                        this.canSearch = true 
+                    }) 
+                    setTimeout(function(){
+                        this.canSearch = true
+                    },1500)
+                } 
+            }
         }
 
     },
@@ -209,7 +229,12 @@ export default {
 
 <style lang="scss" scoped>
 #search { 
-    header {
+    position: absolute;
+    padding-top: 144px;
+    // overflow: hidden;
+    height: 100%;
+    // padding-top: 5px;
+    header { 
         position: relative;
         z-index: 3;
         margin-top: -20px;
@@ -344,11 +369,13 @@ export default {
         position: absolute;
         z-index: 2;
         left: 0;
-        top: 0;
+        top: 185px;
         width: 100%; 
-        padding-top: 185px;
-        min-height: 100vh;
+        // padding-top: 185px;
+        overflow: scroll; 
+        height:  75vh;
         background-color: #fff;
+        
     }
 
 }

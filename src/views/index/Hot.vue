@@ -81,6 +81,7 @@ export default {
 
 <style lang="scss" scoped>
 #hot {
+    padding-top: 144px;
     margin-top: -20px;
     .hot-titpic { 
         box-sizing: border-box;
