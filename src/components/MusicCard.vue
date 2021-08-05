@@ -1,9 +1,9 @@
 <template>
     <div id="music-card" :class="{'touch-active' : touchMoveActive}" ref="musicCard"> 
         <div class="song_car">
-            <!-- v-touch:swipe.bottom="touchBottom" v-touch:swipe.top="touchTop"  -->
-            <ul class="song_nav"  v-touch:moving="touchMoving" @touchend="touchEnd" v-touch:start="touchStart"> 
-                <li :class="{'active' : boxIsActive == 0 }" v-if="relatedMusicList.length" @click="changeTop(0)">
+            <!-- v-touch:swipe.bottom="touchBottom" v-touch:swipe.top="touchTop" -->
+            <ul class="song_nav"  v-touch:moving="touchMoving"  @touchend="touchEnd" v-touch:start="touchStart"> 
+                <li :class="{'active' : boxIsActive == 0 }" v-if="relatedMusicList.length" @click="changeTop(0)" >
                     <span>相关歌单</span>
                 </li>
                 <li :class="{'active' : boxIsActive == 1}" @click="changeTop(1)">
@@ -14,51 +14,53 @@
                 </li>
             </ul>
 
-            <div class="scroll_box" ref="scrollBox" @scroll.self="scrollBox">
-                
-                <div class="song_list" v-if="relatedMusicList.length" ref="songList">
-                    <h3 class="scroll_box_title">包含这首歌的歌单</h3>
-                    <div class="recommend-wrap">
-                        <ul class="recommend-ul">
-                            <template v-for="item in relatedMusicList">
-                                <router-link tag="li" :key="item.id" :to=" `/musicdetails/${item.id} `">
-                                    <img :src="item.picUrl">
-                                    <p>{{item.name}}</p>
-                                    <span>
-                                        <svg class="icon" aria-hidden="true">
-                                            <use xlink:href="#icon-erji"></use>
-                                        </svg>
-                                        {{item.playCount | getPlayCount}}
-                                    </span>
-                                </router-link>
-                            </template>
-                        </ul>
+<!-- @scroll.self="scrollBox" -->
+            <div class="scroll_box wrapper" ref="scrollBox" @scroll="scrollBox">
+                <ul class="content"> 
+                    <div class="song_list" v-if="relatedMusicList.length" ref="songList">
+                        <h3 class="scroll_box_title">包含这首歌的歌单</h3>
+                        <div class="recommend-wrap">
+                            <ul class="recommend-ul">
+                                <template v-for="item in relatedMusicList">
+                                    <router-link tag="li" :key="item.id" :to=" `/musicdetails/${item.id} `">
+                                        <img :src="item.picUrl">
+                                        <p>{{item.name}}</p>
+                                        <span>
+                                            <svg class="icon" aria-hidden="true">
+                                                <use xlink:href="#icon-erji"></use>
+                                            </svg>
+                                            {{item.playCount | getPlayCount}}
+                                        </span>
+                                    </router-link>
+                                </template>
+                            </ul>
+                        </div>
                     </div>
-                </div>
 
-                <div class="more_songs" ref="moreSongs">
-                    <h3 class="scroll_box_title">喜欢这首歌的人也听</h3>
-                    <music-list :datas="similarMusic">
-                        <template v-slot:index="dataObj">
-                            <div class="music-pic"> 
-                                <img :src="dataObj.data" alt="">
-                            </div>
-                        </template>
-                    </music-list>
-                </div>
+                    <div class="more_songs" ref="moreSongs">
+                        <h3 class="scroll_box_title">喜欢这首歌的人也听</h3>
+                        <music-list :datas="similarMusic">
+                            <template v-slot:index="dataObj">
+                                <div class="music-pic"> 
+                                    <img :src="dataObj.data" alt="">
+                                </div>
+                            </template>
+                        </music-list>
+                    </div>
 
-                <div class="user_comment" ref="userComment">
-                    <h3 class="scroll_box_title">精彩评论</h3>
-                    <comm-floor
-                    :datas="goodComments"
-                    >
-                    </comm-floor>
-                </div>
+                    <div class="user_comment" ref="userComment">
+                        <h3 class="scroll_box_title">精彩评论</h3>
+                        <comm-floor
+                        :datas="goodComments"
+                        >
+                        </comm-floor>
+                    </div>
 
-                <div class="end_open_more">
-                    <span>打开云音乐查看更多精彩评论</span>
-                </div>
-            </div>
+                    <div class="end_open_more">
+                        <span>打开云音乐查看更多精彩评论</span>
+                    </div>
+                </ul>
+            </div> 
         </div>
     </div>
 </template>
@@ -66,9 +68,11 @@
 <script>
 import CommFloor from './CommFloor.vue';
 import MusicList from './MusicListFir.vue';
+// import BScroll from '@better-scroll/core'
 export default {
     data: function () {
-        return { 
+        return {  
+            myscroll: '',
             touchMoveActive: false,
             cantouch:true,
             touchStartY: "",    // 触击屏幕时的触击点的Y值
@@ -88,7 +92,8 @@ export default {
     methods: { 
         // 卡片拖动
         touchMoving(e) {  
-            if(e.changedTouches[0].clientY > parseInt(e.changedTouches[0].screenY * 0.26) && e.changedTouches[0].clientY < parseInt(e.changedTouches[0].screenY * 0.811)) {
+            if(e.changedTouches[0].clientY > parseInt(e.changedTouches[0].screenY * 0.33) 
+            && e.changedTouches[0].clientY < parseInt(e.changedTouches[0].screenY * 0.887)) {
                 
                 this.touchMoveActive = true;
                 this.$refs.musicCard.style.transition = "background .6s ease-out"
@@ -112,7 +117,7 @@ export default {
                 this.$refs.musicCard.style.top = `8vh`;
                 this.touchMoveActive = true;
             }else if (this.touchEndY < this.touchStartY && Math.abs(this.touchEndY - this.touchStartY) < 80){
-                console.log(this.touchEndY - this.touchStartY);
+                
                 this.$refs.musicCard.style.top = `92.5vh`;
                 this.touchMoveActive = false; 
             }
@@ -143,7 +148,7 @@ export default {
 
         },
         // 滚动卡片
-        scrollBox() { 
+        scrollBox() {  
             if (this.$refs.songList && this.$refs.scrollBox.scrollTop < this.$refs.songList.offsetTop) {
                 this.$emit("changeTop",0);
             }
@@ -170,6 +175,25 @@ export default {
         $route() {
             this.closeCard()
         }
+    },
+    created() {
+        this.$nextTick(() => { 
+            document.body.addEventListener("touchmove", (e) => {
+                if (!document.querySelector(".scroll_box").contains(e.target)) { 
+                    e.preventDefault();
+                }
+            },{
+                passive: false, 
+            })
+            // this.myscroll = new BScroll(this.$refs.scrollBox,{
+            //     probeType: 2
+            // })
+            // this.myscroll.on("scrollEnd", () => {
+            //     console.log(this.myscroll);
+            // })
+            
+        })
+       
     }
     
 }
@@ -185,12 +209,14 @@ export default {
     transition: all .6s ease-out;
     &.touch-active {
         // top: 8vh;
-        background: #fff;
+        background: #fff; 
         .song_nav {
+            
             li {
                 span {
                     color: #333; 
                 }
+                 
                 &.active span{
                     color: #ff3a3a;
                     border-bottom: 2px solid #ff3a3a;
@@ -207,20 +233,23 @@ export default {
     // overflow: hidden;
     border-radius: 24px 24px 0 0;
     .song_nav {
-        position: relative;
+        position: relative; 
         padding-top: 30px;
         display: flex;
         margin-bottom: 5px;
         justify-content: space-around;
         li {
+          
             flex: 1;
             text-align: center; 
             height: 28px;
             span {
+                transition: all .4s linear ;
                 color: hsla(0,0%,100%,.5); 
                 padding: 0 6px 2px;
                 font-size: 16px;
             }
+           
            
         }
         &::after {
@@ -240,7 +269,9 @@ export default {
         padding: 10px 15px; 
         height: 85vh;
         overflow: scroll;
+         
         &>div{
+           
             margin-bottom: 10px;
         }
         .more_songs {
