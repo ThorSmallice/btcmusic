@@ -7,7 +7,7 @@ import _axios from './utils/_axios'
 import './assets/css/loading.css'
 const loadingsvg = './svg/Spinner-1s-200px.svg';
 import Vue2TouchEvents from 'vue2-touch-events'
-
+ 
 Vue.prototype.axios = _axios
 
 Vue.config.productionTip = false

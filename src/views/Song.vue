@@ -207,8 +207,7 @@ export default {
             this.isplay = false; // 播放状态停止
         },
         // 卡片按钮点击
-        changeTop(val) {
-            // console.log(val);
+        changeTop(val) { 
             this.boxIsActive = val
         }
     },
