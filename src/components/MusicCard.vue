@@ -184,14 +184,7 @@ export default {
                 }
             },{
                 passive: false, 
-            })
-            // this.myscroll = new BScroll(this.$refs.scrollBox,{
-            //     probeType: 2
-            // })
-            // this.myscroll.on("scrollEnd", () => {
-            //     console.log(this.myscroll);
-            // })
-            
+            }) 
         })
        
     }
