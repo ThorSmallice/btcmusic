@@ -7,7 +7,7 @@
             <h2>糖葫芦音乐</h2>
        </div>
        <div class="header-right">
-            <router-link to="#" class="download">下载App</router-link>
+            <!-- <router-link to="#" class="download">下载App</router-link> -->
        </div>
     </div>
 </template>
